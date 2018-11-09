@@ -1,0 +1,17 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+  Tyler Rilling -- @underlost
+
+# TECHNOLOGY COLOPHON
+  Django
+  Gunicorn
+  Python 3.7
+  HTML,
+  CSS
+  SCSS
+  jQuery
+  Pace.js
+  Bootstrap 4
+  postgreSQL

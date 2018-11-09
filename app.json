@@ -1,0 +1,8 @@
+{
+  "name": "jadedgamer.com",
+  "description": "Just another news site.",
+  "image": "heroku/python",
+  "repository": "https://github.com/alifewellplauyed.com/jadedgamer.com",
+  "keywords": ["python", "django" ],
+  "addons": [ "heroku-postgresql" ]
+}
