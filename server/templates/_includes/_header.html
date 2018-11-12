@@ -1,0 +1,33 @@
+{% spaceless %}
+<header class="navbar navbar-light navbar-expand-md {{NavClass|default:'site-header'}}">
+  <div class="{{ContainerClass|default:'container'}}">
+    <a class="navbar-brand" href="{{site_url}}">
+      <h2 class="site-logo sm-site-logo logo-inline-block">Jadedgamer</h2>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#site-header-collapse" aria-controls="site-header-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="side-header-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Explore</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">What's Trending</a>
+            <a class="dropdown-item" href="#">New Links</a>
+            <a href="#">Browse All Feeds</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Sites</a>
+            <a class="dropdown-item" href="#">Tags</a>
+          </div>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'coreExtend:AccountSettings' %}"><i class="fa fa-user-circle" aria-hidden="true"></i> Settings</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'coreExtend:Logout' %}">Logout</a></li>
+        {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'coreExtend:Login' %}">Login</a></li>
+        {% endif %}
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div>
+</header>
+{% endspaceless %}

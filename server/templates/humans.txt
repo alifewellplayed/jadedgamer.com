@@ -15,3 +15,5 @@
   Pace.js
   Bootstrap 4
   postgreSQL
+  Amazon S3
+  AWS Lambda

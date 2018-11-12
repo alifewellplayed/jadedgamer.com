@@ -6,7 +6,6 @@
 
 // grab our packages
 var gulp = require('gulp'),
-    webpack = require('webpack-stream');
     jshint = require('gulp-jshint');
     sass = require('gulp-sass');
     sourcemaps = require('gulp-sourcemaps');
@@ -21,8 +20,6 @@ var gulp = require('gulp'),
     coffee = require('gulp-coffee');
     gutil = require('gulp-util');
     imagemin = require('gulp-imagemin');
-    git = require('gulp-deploy-git');
-    gulpWebpack = require('webpack-stream');
 
 // Cleans the web dist folder
 gulp.task('clean', function () {
@@ -51,12 +48,6 @@ gulp.task('copy-fonts', function() {
   gulp.src('node_modules/components-font-awesome/webfonts/**/*.{ttf,woff,eof,svg,eot,woff2,otf}')
   .pipe(gulp.dest('dist/fonts'));
 });
-gulp.task('admin-fonts', function() {
-  gulp.src('server/static_source/fonts/admin/**/*.{ttf,woff,eof,svg,eot,woff2,otf}')
-  .pipe(gulp.dest('dist/admin/fonts'));
-  gulp.src('node_modules/components-font-awesome/webfonts/**/*.{ttf,woff,eof,svg,eot,woff2,otf}')
-  .pipe(gulp.dest('dist/admin/fonts'));
-});
 
 // Minify Images
 gulp.task('imagemin', function() {
@@ -67,23 +58,23 @@ gulp.task('imagemin', function() {
 
 // Copy component assets
 gulp.task('install', function() {
-  gulp.src('node_modules/components-font-awesome/scss/**/*.*')
-  .pipe(gulp.dest('server/static_source/sass/_shared/font-awesome'));
+  gulp.src('node_modules/@fortawesome/fontawesome-free/scss/**/*.*')
+  .pipe(gulp.dest('media/sass/font-awesome'));
 
   gulp.src('node_modules/bootstrap/scss/**/*.*')
-  .pipe(gulp.dest('server/static_source/sass/_shared/bootstrap'));
+  .pipe(gulp.dest('media/sass/bootstrap'));
 });
 
 // Compile coffeescript to JS
 gulp.task('brew-coffee', function() {
-  return gulp.src('server/static_source/coffee/*.coffee')
+  return gulp.src('media/coffee/*.coffee')
   .pipe(coffee({bare: true}).on('error', gutil.log))
-  .pipe(gulp.dest('server/static_source/js/coffee/'))
+  .pipe(gulp.dest('media/js/coffee/'))
 });
 
 // CSS Build Task for main site/theme
 gulp.task('build-css', function() {
-  return gulp.src('server/static_source/sass/site.scss')
+  return gulp.src('media/sass/site.scss')
   .pipe(sass().on('error', sass.logError))
   .pipe(autoprefixer({
     browsers: ['last 2 versions'],
@@ -102,8 +93,8 @@ gulp.task('concat-js', function() {
     'node_modules/jquery/dist/jquery.js',
     'node_modules/bootstrap/dist/js/bootstrap.min.js',
     'node_modules/pace-progress/pace.js',
-    'server/static_source/js/site.js',
-    'server/static_source/js/coffee/*.*',
+    'media/js/site.js',
+    'media/js/coffee/*.*',
   ])
   .pipe(sourcemaps.init())
   .pipe(concat('site.js'))
@@ -113,7 +104,7 @@ gulp.task('concat-js', function() {
 
 // configure the jshint task
 gulp.task('jshint', function() {
-  return gulp.src('server/static_source/js/site/*.js')
+  return gulp.src('media/js/site/*.js')
   .pipe(jshint())
   .pipe(jshint.reporter('jshint-stylish'));
 });
@@ -134,8 +125,8 @@ gulp.task('build-js', function(callback) {
 // configure which files to watch and what tasks to use on file changes
 gulp.task('watch', function() {
   gulp.watch('server/static_source/coffee/**/*.js', ['brew-coffee', 'copy-dist']);
-  gulp.watch('server/static_source/js/**/*.js', ['build-js', 'admin-build-js', 'copy-dist']);
-  gulp.watch('server/static_source/sass/**/*.scss', ['build-css', 'admin-build-css', 'copy-dist' ] );
+  gulp.watch('server/static_source/js/**/*.js', ['build-js', 'copy-dist']);
+  gulp.watch('server/static_source/sass/**/*.scss', ['build-css', 'copy-dist' ] );
 });
 
 // Build task for theme/frontend

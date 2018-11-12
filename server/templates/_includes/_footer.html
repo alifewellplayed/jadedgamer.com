@@ -1,0 +1,16 @@
+{% spaceless %}
+<footer id="site-footer">
+	<div class="container">
+    <ul id="bottom-nav" class="list-inline">
+        <li class="list-inline-item"><a href="{% url 'static-about' %}">About</a></li>
+        <li class="list-inline-item"><a href="{% url 'static-tour' %}">Tour</a></li>
+        <li class="list-inline-item"><a href="{% url 'static-faq' %}">FAQ</a></li>
+        <li class="list-inline-item"><a href="{% url 'static-terms' %}">Terms of us</a></li>
+        <li class="list-inline-item"><a href="{% url 'static-privacy' %}">Privacy</a></li>
+    </ul>
+    <small id="copyright d-block small">Copyright &copy; <a href="https://tyler.codes/">Tyler Rilling</a> {% now "Y" %} — All content &copy; their respective owners.<br />
+    By using this site you are agreeing to the <a href="{% url 'static-terms' %}">Terms of Use</a> and <a href="{% url 'static-privacy' %}">Privacy Policy</a>.</small>
+    <small class="d-block small muted" id="site-version">Version 2.0.1, "16-Bit Sunrise"</small>
+	</div>
+</footer>
+{% endspaceless %}

@@ -221,6 +221,9 @@ INSTALLED_APPS = (
 
     #Internal
     'coreExtend',
+    'newsFeeds',
+    'newsRedirect',
+    'newsStats',
 )
 
 LOGGING = {
