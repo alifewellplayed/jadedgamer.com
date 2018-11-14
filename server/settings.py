@@ -53,12 +53,12 @@ if ENABLE_CACHE:
     import urlparse
     redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL'))
     CACHES = {
-            'default': {
-                'BACKEND': 'redis_cache.RedisCache',
-                'LOCATION': '%s:%s' % (redis_url.hostname, redis_url.port),
-                'OPTIONS': {
-                    'PASSWORD': redis_url.password,
-                    'DB': 0,
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': '%s:%s' % (redis_url.hostname, redis_url.port),
+            'OPTIONS': {
+                'PASSWORD': redis_url.password,
+                'DB': 0,
             }
         },
         "staticfiles": {
@@ -218,12 +218,13 @@ INSTALLED_APPS = (
     'storages',
     'rest_framework',
     'pagedown',
+    'django-taggit',
+    'vote',
 
     #Internal
     'coreExtend',
     'newsFeeds',
     'newsRedirect',
-    'newsStats',
 )
 
 LOGGING = {

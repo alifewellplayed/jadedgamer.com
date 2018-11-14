@@ -74,7 +74,7 @@ class Feed(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='feeds')
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    next_scheduled_update = models.DateTimeField()
+    next_scheduled_update = models.DateTimeField(blank=True)
     last_story_date = models.DateTimeField(null=True, blank=True)
     subscribers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, null=True,)
     num_subscribers = models.IntegerField(default=-1)
