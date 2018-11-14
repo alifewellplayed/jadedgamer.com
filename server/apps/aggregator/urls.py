@@ -6,7 +6,7 @@ from django.views.decorators.cache import cache_page
 from . import views
 from . import feeds
 
-app_name="NewsFeeds"
+app_name="aggregator"
 urlpatterns = [
-    url(r'^$', views.Index, name = 'index'),
+    path('', views.Index, name='index'),
 ]

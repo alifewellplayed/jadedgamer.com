@@ -16,17 +16,17 @@ from newsRedirect.models import LinkClick
 from voting.models import Vote
 from threadedcomments.models import ThreadedComment
 
-from newsFeeds.models import FeedItem, Feed, FeedList, APPROVED_FEED, PENDING_FEED, DENIED_FEED
-from newsFeeds.forms import FeedModelForm, FeedListModelForm
+from .models import FeedItem, Feed, FeedList
+from .forms import FeedModelForm
 
 def Index(request):
     feeds = []
-    if request.user.is_authenticated():
-        FeedQuery = Feed.objects.approved().filter(subscribers=request.user).order_by('title')
-    else:
-        FeedQuery = Feed.objects.approved().filter(feedlist__title='Default').order_by('title')
+    FeedQuery = Feed.objects.approved().order_by('title')
     for ft in FeedQuery:
         feeds.append((ft, ft.items()[0:ITEM_COUNT]))
-    ctx = {'object_list': feeds, 'headers': False,}
-    tpl = 'newsFeed/index.html'
+    ctx = {
+        'object_list': feeds,
+        'headers': False,
+    }
+    tpl = 'aggregator/index.html'
     return render(request, tpl, ctx)

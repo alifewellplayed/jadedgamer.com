@@ -3,7 +3,7 @@ from django.core.cache import cache
 from django.conf import settings
 
 from coreExtend.models import Account
-from newsFeeds.models import FeedItem
+from aggregator.models import FeedItem
 
 BLOCKED_IPS_LIST = 'external-link:blocked-ips'
 

@@ -5,10 +5,12 @@ from datetime import datetime, timedelta
 from django.db import models
 from django.conf import settings
 from django.template.defaultfilters import slugify
-from django.contrib.sites.models import Site
 from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
+
 from taggit.managers import TaggableManager
+from django_push.subscriber import signals as push_signals
+from django_push.subscriber.models import Subscription
 
 from util.slug import unique_slugify
 from .managers import FeedManager, FeedItemManager
@@ -86,7 +88,7 @@ class Feed(models.Model):
     tags = TaggableManager()
     objects = FeedManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
@@ -103,7 +105,7 @@ class Feed(models.Model):
         if not self.id:
             self.slug = slugify(self.title)
         super(Feed, self).save(**kwargs)
-        if settings.SUPERFEEDR_CREDS != None and self.approval_status == APPROVED_FEED:
+        if settings.SUPERFEEDR_CREDS != None and self.approval_status == 3 and self.feed_type == 1:
             Subscription.objects.subscribe(self.feed_url, settings.PUSH_HUB)
 
     def delete(self, **kwargs):
@@ -122,7 +124,7 @@ class Feed(models.Model):
 
 class FeedItem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    uid = models.CharField(max_length=500, db_index=True)
+    guid = models.CharField(max_length=500, unique=True, db_index=True)
     feed = models.ForeignKey(Feed)
     title = models.CharField(max_length=500)
     original_title = models.CharField(max_length=500)
@@ -141,8 +143,59 @@ class FeedItem(models.Model):
     class Meta:
         ordering = ("-date_added",)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return "/item/%s/" % (self.id)
+        return self.link
+
+
+def feed_updated(sender, notification, **kwargs):
+    log.debug('Recieved notification on subscription ID %s (%s)', sender.id, sender.topic)
+    try:
+        feed = Feed.objects.get(feed_url=sender.topic)
+    except Feed.DoesNotExist:
+        log.error("Subscription ID %s (%s) doesn't have a feed.", sender.id, sender.topic)
+        return
+    notification = feedparser.parse(notification)
+
+    for entry in notification.entries:
+        title = entry.title
+        try:
+            guid = entry.get("id", entry.link)
+        except AttributeError:
+            log.error("Feed ID %s has an entry ('%s') without a link or guid. Skipping.", feed.id, title)
+        link = getattr(entry, "link", guid)
+
+        content = ''
+        if hasattr(entry, "summary"):
+            content = entry.summary
+
+        if hasattr(entry, "description"):
+            content = entry.description
+
+        # 'content' takes precedence on anything else. 'summary' and
+        # 'description' are usually truncated so it's safe to overwrite them
+        if hasattr(entry, "content"):
+            content = ''
+            for item in entry.content:
+                content += item.value
+
+        if 'published_parsed' in entry and entry.published_parsed is not None:
+            date_modified = datetime.datetime(*entry.published_parsed[:6])
+        elif 'updated_parsed' in entry and entry.updated_parsed is not None:
+            date_modified = datetime.datetime(*entry.updated_parsed[:6])
+        else:
+            date_modified = datetime.datetime.now()
+
+        FeedItem.objects.create_or_update_by_guid(
+            guid,
+            feed=feed,
+            title=title,
+            link=link,
+            summary=content,
+            date_modified=date_modified,
+        )
+
+
+push_signals.updated.connect(feed_updated)

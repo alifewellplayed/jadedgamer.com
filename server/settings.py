@@ -201,6 +201,12 @@ SUBDOMAIN_URLCONFS = {
 
 #SESSION_COOKIE_DOMAIN = '.jadedgamer.com'
 
+# django-push settings
+PUSH_HUB = 'https://push.superfeedr.com/'
+PUSH_CREDENTIALS = 'util.subscribe.push_credentials'
+# SUPERFEEDR_CREDS is a 2 element list in the form of [email,secretkey]
+SUPERFEEDR_CREDS = SECRETS.get('superfeedr_creds')
+
 
 INSTALLED_APPS = (
     #Django
@@ -220,11 +226,13 @@ INSTALLED_APPS = (
     'pagedown',
     'django-taggit',
     'vote',
+    'django_push.subscriber',
 
     #Internal
     'coreExtend',
-    'newsFeeds',
-    'newsRedirect',
+    'aggregator',
+    'redirect',
+    'voting',
 )
 
 LOGGING = {
