@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+from django.urls import include, path
 from django.contrib.sitemaps.views import sitemap
 from django.contrib import admin
 from django.conf import settings
@@ -14,12 +14,12 @@ admin.site.site_header = site_settings.SITE_NAME
 
 urlpatterns = [
     #admin
-    url(r'^admin96/', admin.site.urls),
+    path(r'^admin96/', admin.site.urls),
 
     #API
     #url(r'^api/docs/', include('rest_framework_swagger.urls')),
-    path('api/v2/auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api/v2/', include('api.urls', namespace='rest_api')),
+    path('api/v2/auth/', include('rest_framework.urls')),
+    path('api/v2/', include('api.urls')),
 
     # Static
     path('404/', TemplateView.as_view(template_name="404.html"), name="404_page"),

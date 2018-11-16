@@ -13,21 +13,46 @@ from .forms import AccountModelForm, UserCreationForm
 from .models import Account
 
 def register(request):
+    success_url = get_redirect_url(request)
     if not settings.ALLOW_NEW_REGISTRATIONS:
-        messages.error(request, "The admin of this service is not allowing new registrations.")
+        messages.error(request, "The admin of this service is not "
+                                "allowing new registrations.")
         return redirect(settings.SITE_URL)
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CreateAccountForm(request.POST)
         if form.is_valid():
             user = form.save()
             messages.success(request, 'Thanks for registering. You are now logged in.')
             new_user = authenticate(username=request.POST['username'], password=request.POST['password'])
             login(request, new_user)
-            return redirect(settings.SITE_URL)
+            if success_url:
+                return redirect(success_url)
+            else:
+                return redirect('coreExtend:AccountSettings')
     else:
-        form = UserCreationForm()
+        form = CreateAccountForm()
 
-    return render(request, 'coreExtend/register.html', {'form': form})
+    return TemplateResponse(request, 'coreExtend/register.html', {'form': form, 'next': success_url})
+
+@login_required
+def password(request):
+    if request.user.has_usable_password():
+        PasswordForm = PasswordChangeForm
+    else:
+        PasswordForm = AdminPasswordChangeForm
+
+    if request.method == 'POST':
+        form = PasswordForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('coreExtend:AccountSettings')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordForm(request.user)
+    return render(request, 'coreExtend/account/password_change_form.html', {'form': form})
 
 @login_required
 def logout_user(request):

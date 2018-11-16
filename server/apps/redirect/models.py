@@ -32,8 +32,8 @@ class BlockedIp(models.Model):
 
 
 class LinkClick(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
-    link = models.ForeignKey(FeedItem, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
+    link = models.ForeignKey(FeedItem, null=True, on_delete=models.SET_NULL)
     referer = models.CharField(max_length=512)
     user_agent = models.CharField(max_length=1024, null=True)
     ip_addr = models.IPAddressField()

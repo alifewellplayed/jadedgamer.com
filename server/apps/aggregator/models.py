@@ -11,8 +11,8 @@ from django.contrib.postgres.fields import JSONField
 from taggit.managers import TaggableManager
 from django_push.subscriber import signals as push_signals
 from django_push.subscriber.models import Subscription
+from coreExtend.util.slug  import unique_slugify
 
-from util.slug import unique_slugify
 from .managers import FeedManager, FeedItemManager
 
 import logging
@@ -39,10 +39,10 @@ class FeedList(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=250)
     slug = models.SlugField(unique=True)
-    can_self_add = models.BooleanField(help_text=_("Who can see this list?"), choices=FEEDLIST_CHOICES, default=False)
-    date_added = models.DateTimeField(verbose_name=_("When list was added to the site"), auto_now_add=True)
+    can_self_add = models.BooleanField(help_text="Who can see this list?", choices=FEEDLIST_CHOICES, default=False)
+    date_added = models.DateTimeField(verbose_name="When list was added to the site", auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='lists', blank=True, null=True )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='lists', blank=True, null=True, on_delete=models.SET_NULL )
     feeds = models.ManyToManyField('Feed', blank=True)
     description = models.TextField(max_length=500, blank=True, null=True)
 
@@ -73,7 +73,7 @@ class Feed(models.Model):
     active = models.BooleanField(default=True, db_index=True)
     feed_type = models.IntegerField(max_length=1, choices=FEED_TYPE, default=1)
     approval_status = models.IntegerField(max_length=1, choices=STATUS_CHOICES, default=1)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='feeds')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='feeds', on_delete=models.SET_NULL)
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     next_scheduled_update = models.DateTimeField(blank=True)
@@ -125,7 +125,7 @@ class Feed(models.Model):
 class FeedItem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     guid = models.CharField(max_length=500, unique=True, db_index=True)
-    feed = models.ForeignKey(Feed)
+    feed = models.ForeignKey(Feed, blank=True, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=500)
     original_title = models.CharField(max_length=500)
     link = models.URLField(max_length=500)

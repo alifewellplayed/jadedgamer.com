@@ -4,7 +4,7 @@ import re
 
 from django.conf import settings
 from django.utils.cache import patch_vary_headers
-from .utils import get_domain
+from coreExtend.util.utils import get_domain
 from django.utils.deprecation import MiddlewareMixin
 
 logger = logging.getLogger(__name__)

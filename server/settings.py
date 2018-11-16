@@ -25,6 +25,7 @@ ENABLE_CACHE = False
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    '0.0.0.0',
 	'jadedgamer.com', 'www.jadedgamer.com',
 	'jadedgamer.herokuapp.com', #Heroku
     '8po2lakic6.execute-api.us-east-1.amazonaws.com', #AWS
@@ -205,7 +206,7 @@ SUBDOMAIN_URLCONFS = {
 PUSH_HUB = 'https://push.superfeedr.com/'
 PUSH_CREDENTIALS = 'util.subscribe.push_credentials'
 # SUPERFEEDR_CREDS is a 2 element list in the form of [email,secretkey]
-SUPERFEEDR_CREDS = SECRETS.get('superfeedr_creds')
+SUPERFEEDR_CREDS = os.environ.get('superfeedr_creds', '')
 
 
 INSTALLED_APPS = (
@@ -224,7 +225,7 @@ INSTALLED_APPS = (
     'storages',
     'rest_framework',
     'pagedown',
-    'django-taggit',
+    'taggit',
     'vote',
     'django_push.subscriber',
 
