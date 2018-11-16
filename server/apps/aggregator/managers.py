@@ -11,10 +11,10 @@ log = logging.getLogger(__name__)
 
 class FeedManager(models.Manager):
 	def approved(self):
-		return self.active().filter(approval_status=3).filter(is_defunct=False)
+		return self.active().filter(approval_status=3)
 
 	def active(self):
-		return super(FeedManager, self).get_queryset().filter(is_defunct=False)
+		return super(FeedManager, self).get_queryset().filter(active=True)
 
 
 class FeedItemManager(models.Manager):

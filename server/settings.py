@@ -164,7 +164,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'coreExtend.context_processors.template_settings',
                 'coreExtend.context_processors.template_times',
-                'replica.context_processors.currentSite',
                 'django.template.context_processors.request',
             ],
             'debug': DEBUG,

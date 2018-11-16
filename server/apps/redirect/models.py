@@ -20,7 +20,7 @@ class BlockedManager(models.Manager):
 
 class BlockedIp(models.Model):
     name = models.CharField(max_length=128, blank=True)
-    ip_addr = models.IPAddressField(null=True)
+    ip_addr = models.GenericIPAddressField(null=True)
     objects = BlockedManager()
 
     def __unicode__(self):
@@ -36,7 +36,7 @@ class LinkClick(models.Model):
     link = models.ForeignKey(FeedItem, null=True, on_delete=models.SET_NULL)
     referer = models.CharField(max_length=512)
     user_agent = models.CharField(max_length=1024, null=True)
-    ip_addr = models.IPAddressField()
+    ip_addr = models.GenericIPAddressField()
     pub_date = models.DateTimeField(auto_now_add=True)
 
     def store(self, request):
