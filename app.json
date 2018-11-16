@@ -4,5 +4,6 @@
   "image": "heroku/python",
   "repository": "https://github.com/alifewellplauyed.com/jadedgamer.com",
   "keywords": ["python", "django" ],
-  "addons": [ "heroku-postgresql" ]
+  "addons": [ "heroku-postgresql" ],
+  "buildpacks": [{ "url": "heroku/python" }]
 }
