@@ -29,13 +29,11 @@ class FeedItemManager(models.Manager):
         """
         try:
             item = self.get(guid=guid)
-
         except self.model.DoesNotExist:
             # Create a new item
             log.debug('Creating entry: %s', guid)
             kwargs['guid'] = guid
             item = self.create(**kwargs)
-
         else:
             log.debug('Updating entry: %s', guid)
 

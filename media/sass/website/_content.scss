@@ -1,0 +1,10 @@
+.site-feed {
+  .title {
+    border-bottom: 1px solid darken($body-bg, 20%);
+    .view-more {
+      font-family: $font-family-sans-serif;
+      font-size: 12px;
+      color: darken($body-bg, 60%);
+    }
+  }
+}

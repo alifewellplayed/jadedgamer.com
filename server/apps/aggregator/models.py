@@ -76,7 +76,7 @@ class Feed(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='feeds', on_delete=models.SET_NULL)
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    next_scheduled_update = models.DateTimeField(blank=True)
+    next_scheduled_update = models.DateTimeField(null=True, blank=True)
     last_story_date = models.DateTimeField(null=True, blank=True)
     subscribers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
     num_subscribers = models.IntegerField(default=-1)
@@ -85,7 +85,7 @@ class Feed(models.Model):
     favicon_color = models.CharField(max_length=6, null=True, blank=True)
     favicon_not_found = models.BooleanField(default=False)
     search_indexed = models.NullBooleanField(default=None, null=True, blank=True)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
     objects = FeedManager()
 
     def __str__(self):
@@ -95,7 +95,7 @@ class Feed(models.Model):
         return "/sites/%s/" % (self.slug,)
 
     def items(self):
-        return FeedItem.objects.active().filter(feed=self)[:10]
+        return FeedItem.objects.filter(feed=self)[:10]
 
     def item_count(self):
         item_counts = FeedItem.objects.filter(feed=self).count()
@@ -194,7 +194,7 @@ def feed_updated(sender, notification, **kwargs):
             title=title,
             link=link,
             summary=content,
-            date_modified=date_modified,
+            date_updated=date_modified,
         )
 
 

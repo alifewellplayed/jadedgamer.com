@@ -7,25 +7,20 @@ import socket
 import sys
 import time
 import threading
-import Queue
+import queue
 from django.core.management.base import BaseCommand
 from aggregator.models import Feed, FeedItem
 
 class Command(BaseCommand):
     LOCKFILE = "/tmp/update_feeds.lock"
-    option_list = BaseCommand.option_list + (
-        optparse.make_option('-t', '--threads',
-            metavar='NUM',
-            type='int',
-            default=4,
-            help='Number of updater threads (default: 4).'
-        ),
-    )
+
+    def add_arguments(self, parser):
+        parser.add_argument('-t', '--threads', metavar='NUM', type=int, default=4, help='Number of updater threads (default: 4).')
 
     def handle(self, *args, **kwargs):
         log = self.setup_logging()
         log.debug('Starting run.')
-
+        total_threads = kwargs['threads']
         try:
             lockfile = os.open(self.LOCKFILE, os.O_CREAT | os.O_EXCL)
         except OSError:
@@ -46,7 +41,7 @@ class Command(BaseCommand):
         log.debug('Ending run.')
 
     def update_feeds(self, verbose=False, num_threads=4):
-        feed_queue = Queue.Queue()
+        feed_queue = queue.Queue()
         for feed in Feed.objects.approved():
             feed_queue.put(feed)
         threadpool = []
@@ -79,7 +74,7 @@ class FeedUpdateWorker(threading.Thread):
         while 1:
             try:
                 feed = self.q.get_nowait()
-            except Queue.Empty:
+            except queue.Empty:
                 return
             self.update_feed(feed)
             self.q.task_done()
@@ -87,7 +82,7 @@ class FeedUpdateWorker(threading.Thread):
     def update_feed(self, feed):
         self.log.debug('Starting update: %s.' % feed)
         if self.verbose:
-            print feed
+            print(feed)
 
         try:
             socket.setdefaulttimeout(15)
@@ -131,7 +126,7 @@ class FeedUpdateWorker(threading.Thread):
                 title = title,
                 link = link,
                 summary = content,
-                date_modified = date_modified
+                date_updated = date_modified
             )
 
         self.log.debug('Done with %s.' % feed)

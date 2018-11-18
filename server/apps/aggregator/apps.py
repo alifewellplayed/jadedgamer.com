@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 class aggregatorConfig(AppConfig):
     name = 'aggregator'
-    verbose_name = "feed Aggregator"
+    verbose_name = "Feed Aggregator"

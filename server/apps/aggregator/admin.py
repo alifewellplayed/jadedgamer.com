@@ -29,8 +29,8 @@ admin.site.register(
 
 admin.site.register(
     FeedItem,
-    list_display=['title', 'feed', 'date_modified'],
+    list_display=['title', 'feed', 'date_updated'],
     list_filter=['feed'],
     search_fields=['feed__title', 'feed__site_url', 'title'],
-    date_heirarchy=['date_modified'],
+    date_heirarchy=['date_updated'],
 )

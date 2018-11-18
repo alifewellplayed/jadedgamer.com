@@ -17,6 +17,8 @@ from redirect.models import LinkClick
 from .models import FeedItem, Feed, FeedList
 from .forms import FeedModelForm
 
+ITEM_COUNT = 5
+
 def Index(request):
     feeds = []
     FeedQuery = Feed.objects.approved().order_by('title')
