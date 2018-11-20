@@ -1,26 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">{% load core_tags %}
-<head>
-    <title>{% block title %}{% endblock %}{{site_name}}</title>
-    <link rel="profile" href="http://gmpg.org/xfn/11" />
-    <link rel="canonical" href="{{site_url}}" />
-    <link rel="shortcut icon" href="{{STATIC_URL}}replica/img/favicon.ico"/>
-    <link rel="apple-touch-icon" href="{{STATIC_URL}}replica/img/iphone_replica.png"/>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="robots" content="all" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{STATIC_URL}}admin/css/admin.min.css" type="text/css" media="screen" />
-    {% block extra %}{% endblock %}
-</head>
+{% extends "base.html" %}{% load i18n %}{% load core_tags %}
 
-<body class="{% block page %}{% endblock %} coreExtend">
-    <div class="row mt-5 justify-content-md-center">
-        <div class="col-md-4">
-            {% block content %}{% endblock %}
-        </div>
+{% block title %}Account{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-3">
+      <div id="avatar" class="text-center d-block mx-auto my-4">
+          <img class="rounded-circle border" width="120" height="120" src="https://secure.gravatar.com/avatar/{{ user.username|email_hash }}?s=250&amp;d={{STATIC_URL}}img/gravatar.png">
+      </div>
+      <h2 class="text-center">{{ user.username }}</h2>
     </div>
-    <script src="{{STATIC_URL}}admin/js/global.js" type="text/javascript"></script>
-    {% block javascript %}{% endblock %}
-</body>
-</html>
+    <div class="col-md-6">
+    {% block content %}{% endblock %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

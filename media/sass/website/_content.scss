@@ -5,6 +5,11 @@
       font-family: $font-family-sans-serif;
       font-size: 12px;
       color: darken($body-bg, 60%);
+      font-style: italic;
     }
   }
+}
+
+.list-feeditems {
+  a:visited {color: darken($body-bg, 50%); }
 }

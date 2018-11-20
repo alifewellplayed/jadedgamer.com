@@ -8,11 +8,6 @@
 <div class="NarrowWrap">
 <section class="panel panel-default replica-panel">
 <div class="panel-body">
-    <div id="avatar" class="text-center d-block mx-auto my-4">
-        <img class="rounded-circle border" width="120" height="120" src="https://secure.gravatar.com/avatar/{{ user.username|email_hash }}?s=250&amp;d={{STATIC_URL}}img/gravatar.png">
-    </div>
-
-    <h2 class="text-center">{{ user.username }}</h2>
 
     <form method="post" enctype="multipart/form-data" action="" class="wide mb-4">{% csrf_token %}
 

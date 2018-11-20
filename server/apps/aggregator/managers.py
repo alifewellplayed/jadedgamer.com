@@ -9,12 +9,16 @@ from django.utils.translation import ugettext_lazy as _
 
 log = logging.getLogger(__name__)
 
-class FeedManager(models.Manager):
-	def approved(self):
-		return self.active().filter(approval_status=3)
+class FeedListManager(models.Manager):
+    def public(self):
+        return super(FeedListManager, self).get_queryset().filter(can_self_add=False)
 
-	def active(self):
-		return super(FeedManager, self).get_queryset().filter(active=True)
+class FeedManager(models.Manager):
+    def approved(self):
+        return self.active().filter(approval_status=3)
+
+    def active(self):
+        return super(FeedManager, self).get_queryset().filter(active=True)
 
 
 class FeedItemManager(models.Manager):

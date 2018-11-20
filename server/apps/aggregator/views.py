@@ -2,6 +2,7 @@
 import json
 import datetime
 
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
@@ -24,9 +25,48 @@ def Index(request):
     FeedQuery = Feed.objects.approved().order_by('title')
     for ft in FeedQuery:
         feeds.append((ft, ft.items()[0:ITEM_COUNT]))
-    ctx = {
-        'object_list': feeds,
-        'headers': False,
-    }
-    tpl = 'aggregator/index.html'
+    ctx = { 'object_list': feeds, 'title': 'Home', }
+    tpl = 'aggregator/feed_list.html'
     return render(request, tpl, ctx)
+
+#All Published feeds
+class AllFeedsListView(ListView):
+    paginate_by = 15
+    template_name = 'aggregator/feed_list.html'
+
+    def get_queryset(self):
+        feeds = []
+        for ft in Feed.objects.approved().order_by('title'):
+            feeds.append((ft, ft.items()[0:ITEM_COUNT]))
+        return feeds
+
+    def get_context_data(self, **kwargs):
+        context = super(AllFeedsListView, self).get_context_data(**kwargs)
+        context.update({'title': 'All Feeds',})
+        return context
+
+#Feeds by tag
+def TagView(request, tag_name_slug):
+    feeds = []
+    tag = get_object_or_404(Tag, slug=tag_name_slug)
+    for ft in Feed.objects.approved().filter(tags__name__in=[tag]).order_by('-title'):
+        feeds.append((ft, ft.items()[0:5]))
+    ctx = {'object_list': feeds, 'title': tag }
+    return render(request, 'aggregator/feed_list.html', ctx)
+
+class SearchListView(ListView):
+    model = FeedItem
+    paginate_by = 15
+    template_name = 'aggregator/search.html'
+
+    def get_queryset(self):
+        qs = FeedItem.objects.all()
+        keywords = self.request.GET.get('q')
+        if keywords:
+            query = SearchQuery(keywords)
+            title_vector = SearchVector('title', weight='A')
+            content_vector = SearchVector('summary', weight='B')
+            vectors = title_vector + content_vector
+            qs = qs.annotate(search=vectors).filter(search=query)
+            qs = qs.annotate(rank=SearchRank(vectors, query)).order_by('-rank')
+        return qs

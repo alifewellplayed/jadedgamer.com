@@ -8,4 +8,6 @@ from . import views
 app_name="aggregator"
 urlpatterns = [
     path('', views.Index, name='index'),
+    path('all/', views.AllFeedsListView.as_view(), name='AllFeeds'),
+    path('search/', views.SearchListView.as_view(), name='Search'),
 ]

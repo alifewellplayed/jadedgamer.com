@@ -13,7 +13,7 @@ from django_push.subscriber import signals as push_signals
 from django_push.subscriber.models import Subscription
 from coreExtend.util.slug  import unique_slugify
 
-from .managers import FeedManager, FeedItemManager
+from .managers import FeedManager, FeedItemManager, FeedListManager
 
 import logging
 logger = logging.getLogger('default')
@@ -39,12 +39,13 @@ class FeedList(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=250)
     slug = models.SlugField(unique=True)
-    can_self_add = models.BooleanField(help_text="Who can see this list?", choices=FEEDLIST_CHOICES, default=False)
+    can_self_add = models.BooleanField(help_text="Who can edit this list?", choices=FEEDLIST_CHOICES, default=True)
     date_added = models.DateTimeField(verbose_name="When list was added to the site", auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='lists', blank=True, null=True, on_delete=models.SET_NULL )
     feeds = models.ManyToManyField('Feed', blank=True)
     description = models.TextField(max_length=500, blank=True, null=True)
+    objects = FeedListManager()
 
     def __str__(self):
         return self.title
@@ -72,6 +73,7 @@ class Feed(models.Model):
     feed_url = models.URLField(unique=True, max_length=500)
     active = models.BooleanField(default=True, db_index=True)
     feed_type = models.SmallIntegerField(choices=FEED_TYPE, default=1)
+    feed_list = models.ForeignKey(FeedList, related_name='feed_lists', blank=True, null=True, on_delete=models.SET_NULL)
     approval_status = models.SmallIntegerField(choices=STATUS_CHOICES, default=1)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='feeds', on_delete=models.SET_NULL)
     date_added = models.DateTimeField(auto_now_add=True)

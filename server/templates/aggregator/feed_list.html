@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
+{% block title %}{{title}}{% endblock %}
+
 {% block body %}
 <div class="container my-5">
   <div class="row">
   {% for feed, latest_feeds in object_list %}
   <div class="col-md-4 site-feed">
   <h6 class="h5 title pb-2">{{ feed.title }} <small><a rel="nofollow" class="view-more" href="{{ feed.site_url }}">(View site)</a></small></h3>
-    <ul class="list-unstyled">
+    <ul class="list-unstyled list-feeditems">
     {% for item in latest_feeds %}
     <li class="small"><a href="{{item.link}}">{{item.title}}</a></li>
     {% endfor %}
@@ -14,5 +16,7 @@
   </div>
   {% endfor %}
   </div>
+
+  {% include "_includes/_search.html" %}
 </div>
 {% endblock %}

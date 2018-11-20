@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Feed, FeedItem
+from .models import Feed, FeedItem, FeedList
 
 def mark_approved(modeladmin, request, queryset):
     for item in queryset.iterator():
@@ -33,4 +33,9 @@ admin.site.register(
     list_filter=['feed'],
     search_fields=['feed__title', 'feed__site_url', 'title'],
     date_heirarchy=['date_updated'],
+)
+
+admin.site.register(
+    FeedList,
+    prepopulated_fields={'slug': ('title',)},
 )
