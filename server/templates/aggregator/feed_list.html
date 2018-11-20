@@ -7,13 +7,15 @@
   <div class="row">
   {% for feed, latest_feeds in object_list %}
   <div class="col-md-4 site-feed">
-  <h6 class="h5 title pb-2">{{ feed.title }} <small><a rel="nofollow" class="view-more" href="{{ feed.site_url }}">(View site)</a></small></h3>
+    <h6 class="h5 title pb-2">{{ feed.title }} <small><a rel="nofollow" class="view-more" href="{{ feed.site_url }}">(View site)</a></small></h3>
     <ul class="list-unstyled list-feeditems">
-    {% for item in latest_feeds %}
-    <li class="small"><a href="{{item.link}}">{{item.title}}</a></li>
-    {% endfor %}
+      {% for item in latest_feeds %}
+      <li class="small py-1"><a href="{{item.link}}">{{item.title}}</a></li>
+      {% endfor %}
     </ul>
   </div>
+  {% if forloop.counter|divisibleby:3 %}<hr class="col-md-12 d-none d-md-block linebreak my-4" />{% endif %}
+
   {% endfor %}
   </div>
 
