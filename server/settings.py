@@ -203,7 +203,7 @@ SUBDOMAIN_URLCONFS = {
 
 # django-push settings
 PUSH_HUB = 'https://push.superfeedr.com/'
-PUSH_CREDENTIALS = 'coreExtend.util.subscribe.push_credentials'
+PUSH_CREDENTIALS = 'aggregator.utils.push_credentials'
 # SUPERFEEDR_CREDS is a 2 element list in the form of [email,secretkey]
 SUPERFEEDR_CREDS = os.environ.get('superfeedr_creds', '')
 

@@ -11,10 +11,10 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-<p class="logged-in">Already Logged in. <a href="{% url 'CoreExtend:Logout' %}">Logout?</a></p>
+<p class="logged-in">Already Logged in. <a href="{% url 'coreExtend:Logout' %}">Logout?</a></p>
 {% else %}
 <h2 class="mb-2">Login</h2>
-<form class="form-signin" method="post" action="{% url 'CoreExtend:login' %}">{% csrf_token %}
+<form class="form-signin" method="post" action="{% url 'coreExtend:Login' %}">{% csrf_token %}
     <div class="form-group {% if form.username.errors %}has-error{% endif %}">
         <label for="id_username" class="sr-only">{% trans 'Username' %}</label>
         <input id="id_username" class="form-control" placeholder="Username" type="text" name="username" maxlength="255" />
@@ -35,7 +35,7 @@
     <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-<p class="mt-3"><a href="{% url 'CoreExtend:password_reset' %}">Forgot your password?</a></p>
-{% if site_register %}<p><a href="{% url 'CoreExtend:register' %}">Need an account</a>?</p>{% endif %}
+<p class="mt-3"><a href="{% url 'coreExtend:password_reset' %}">Forgot your password?</a></p>
+{% if site_register %}<p><a href="{% url 'coreExtend:Register' %}">Need an account</a>?</p>{% endif %}
 {% endif %}
 {% endblock %}

@@ -9,6 +9,8 @@ from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
 
 from taggit.managers import TaggableManager
+from taggit.models import GenericUUIDTaggedItemBase, TaggedItemBase
+
 from django_push.subscriber import signals as push_signals
 from django_push.subscriber.models import Subscription
 from coreExtend.util.slug  import unique_slugify
@@ -34,6 +36,16 @@ FEEDLIST_CHOICES = (
     (True, 'Only me'),
     (False, 'Everyone')
 )
+
+class UUIDTaggedItem(GenericUUIDTaggedItemBase, TaggedItemBase):
+    # If you only inherit GenericUUIDTaggedItemBase, you need to define
+    # a tag field. e.g.
+    # tag = models.ForeignKey(Tag, related_name="uuid_tagged_items", on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Tag'
+        verbose_name_plural = 'Tags'
+
 
 class FeedList(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -87,7 +99,7 @@ class Feed(models.Model):
     favicon_color = models.CharField(max_length=6, null=True, blank=True)
     favicon_not_found = models.BooleanField(default=False)
     search_indexed = models.NullBooleanField(default=None, null=True, blank=True)
-    tags = TaggableManager(blank=True)
+    tags = TaggableManager(through=UUIDTaggedItem, blank=True)
     objects = FeedManager()
 
     def __str__(self):
@@ -135,7 +147,7 @@ class FeedItem(models.Model):
     summary = models.TextField(blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-
+    tags = TaggableManager(through=UUIDTaggedItem, blank=True)
     objects = FeedItemManager()
 
     def clicks(self):

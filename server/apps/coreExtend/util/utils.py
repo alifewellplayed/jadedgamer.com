@@ -1,4 +1,5 @@
 import functools
+import hashlib
 
 try:
     from urlparse import urlunparse
@@ -6,9 +7,14 @@ except ImportError:
     from urllib.parse import urlunparse
 
 from django.conf import settings
+from django.utils.http import is_safe_url
 from django.contrib.sites.models import Site
 from django.urls import reverse as simple_reverse
 
+def generate_secret_token(phrase, size=12):
+    """Generate a (SHA1) security hash from the provided info."""
+    info = "".join([phrase, settings.SECRET_KEY])
+    return hashlib.sha1(info.encode('utf-8')).hexdigest()[:size]
 
 def current_site_domain():
     if settings.SITE_URL == 'http://localhost':
@@ -22,6 +28,18 @@ def current_site_domain():
     return domain
 
 get_domain = current_site_domain
+
+def get_redirect_url(request):
+    redirect_to = request.POST.get(
+        'next',
+        request.GET.get('next', '')
+    )
+    url_is_safe = is_safe_url(
+        url=redirect_to,
+        allowed_hosts=set(request.get_host()),
+        require_https=request.is_secure(),
+    )
+    return redirect_to if url_is_safe else ''
 
 
 def urljoin(domain, path=None, scheme=None):

@@ -1,6 +1,7 @@
 {% spaceless %}
 <footer id="site-footer">
 	<div class="container">
+		{% include "_includes/_search.html" %}
     <ul id="bottom-nav" class="list-inline">
         <li class="list-inline-item"><a href="{% url 'page_about' %}">About</a></li>
         <li class="list-inline-item"><a href="{% url 'page_tour' %}">Tour</a></li>

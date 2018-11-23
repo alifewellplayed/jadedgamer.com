@@ -12,12 +12,11 @@
         <li class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Explore</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">What's Trending</a>
-            <a class="dropdown-item" href="#">New Links</a>
-            <a class="dropdown-item" href="#">Browse All Feeds</a>
+            <a class="dropdown-item" href="#">Trending</a>
+            <a class="dropdown-item" href="#">New</a>
+            <a class="dropdown-item" href="{% url 'aggregator:AllFeeds' %}">Browse All Feeds</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Sites</a>
-            <a class="dropdown-item" href="#">Tags</a>
+            <a class="dropdown-item" href="{% url 'aggregator:FeedTagList' %}">Tags</a>
           </div>
         </li>
         {% if user.is_authenticated %}

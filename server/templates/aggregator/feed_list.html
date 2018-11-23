@@ -4,6 +4,11 @@
 
 {% block body %}
 <div class="container my-5">
+
+  {% if title %}
+  <div class="mb-4"><h4 class="h6 title uppercase">{{ title }}</h4></div>
+  {% endif %}
+
   <div class="row">
   {% for feed, latest_feeds in object_list %}
   <div class="col-md-4 site-feed">
@@ -19,6 +24,5 @@
   {% endfor %}
   </div>
 
-  {% include "_includes/_search.html" %}
 </div>
 {% endblock %}

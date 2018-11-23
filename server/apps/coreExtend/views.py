@@ -11,6 +11,7 @@ from django.template import RequestContext
 
 from .forms import AccountModelForm, UserCreationForm
 from .models import Account
+from .util.utils import get_redirect_url
 
 def register(request):
     success_url = get_redirect_url(request)
