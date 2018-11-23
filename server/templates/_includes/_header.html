@@ -10,18 +10,27 @@
     <div class="collapse navbar-collapse" id="side-header-collapse">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">News</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Latest</a>
+            <a class="dropdown-item" href="#">Trending</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Explore</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Trending</a>
-            <a class="dropdown-item" href="#">New</a>
             <a class="dropdown-item" href="{% url 'aggregator:AllFeeds' %}">Browse All Feeds</a>
-            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{% url 'aggregator:FeedTagList' %}">Tags</a>
           </div>
         </li>
         {% if user.is_authenticated %}
-        <li class="nav-item"><a class="nav-link" href="{% url 'coreExtend:AccountSettings' %}"><i class="fa fa-user-circle" aria-hidden="true"></i> Settings</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'coreExtend:Logout' %}">Logout</a></li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true"></i></a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'coreExtend:AccountSettings' %}">Settings</a>
+            <a class="dropdown-item" href="{% url 'coreExtend:Logout' %}">Logout</a>
+          </div>
+        </li>
         {% else %}
         <li class="nav-item"><a class="nav-link" href="{% url 'coreExtend:Login' %}">Login</a></li>
         {% endif %}

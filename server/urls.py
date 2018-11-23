@@ -36,6 +36,7 @@ urlpatterns = [
 
     # Apps
     path('r/', include('redirect.urls')),
+    path('news/', include('news.urls')),
     path('', include('coreExtend.urls')),
     path('', include('aggregator.urls')),
 
