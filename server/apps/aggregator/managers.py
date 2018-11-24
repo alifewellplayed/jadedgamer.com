@@ -14,6 +14,9 @@ class FeedListManager(models.Manager):
         return super(FeedListManager, self).get_queryset().filter(can_self_add=False)
 
 class FeedManager(models.Manager):
+    def subscribed(self):
+        return self.approved().filter(pubsub_enabled=True)
+
     def approved(self):
         return self.active().filter(approval_status=3)
 

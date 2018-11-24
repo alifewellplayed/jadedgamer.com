@@ -101,6 +101,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 STATIC_ROOT = 'staticfiles'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'server/static'), )
+TAGGIT_CASE_INSENSITIVE = True #django-taggit
 
 if ENABLE_S3:
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -231,6 +232,7 @@ INSTALLED_APPS = (
     #Internal
     'coreExtend',
     'aggregator',
+    'news',
     'redirect',
     'voting',
 )

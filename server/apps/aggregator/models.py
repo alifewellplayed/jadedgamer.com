@@ -14,6 +14,7 @@ from taggit.models import GenericUUIDTaggedItemBase, TaggedItemBase
 from django_push.subscriber import signals as push_signals
 from django_push.subscriber.models import Subscription
 from coreExtend.util.slug  import unique_slugify
+from coreExtend.models import UUIDTaggedItem
 
 from .managers import FeedManager, FeedItemManager, FeedListManager
 
@@ -36,16 +37,6 @@ FEEDLIST_CHOICES = (
     (True, 'Only me'),
     (False, 'Everyone')
 )
-
-class UUIDTaggedItem(GenericUUIDTaggedItemBase, TaggedItemBase):
-    # If you only inherit GenericUUIDTaggedItemBase, you need to define
-    # a tag field. e.g.
-    # tag = models.ForeignKey(Tag, related_name="uuid_tagged_items", on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = 'Tag'
-        verbose_name_plural = 'Tags'
-
 
 class FeedList(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -99,6 +90,7 @@ class Feed(models.Model):
     favicon_color = models.CharField(max_length=6, null=True, blank=True)
     favicon_not_found = models.BooleanField(default=False)
     search_indexed = models.NullBooleanField(default=None, null=True, blank=True)
+    pubsub_enabled = models.BooleanField(default=False)
     tags = TaggableManager(through=UUIDTaggedItem, blank=True)
     objects = FeedManager()
 
@@ -119,7 +111,7 @@ class Feed(models.Model):
         if not self.id:
             self.slug = slugify(self.title)
         super(Feed, self).save(**kwargs)
-        if settings.SUPERFEEDR_CREDS != None and self.approval_status == 3 and self.feed_type == 1:
+        if settings.SUPERFEEDR_CREDS != None and self.pubsub_enabled == True and self.feed_type == 1:
             Subscription.objects.subscribe(self.feed_url, settings.PUSH_HUB)
 
     def delete(self, **kwargs):
