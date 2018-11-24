@@ -25,6 +25,7 @@ STATUS_CHOICES = (
     (1, 'Pending'),
     (2, 'Denied'),
     (3, 'Approved'),
+    (4, 'Deleted'),
 )
 
 FEED_TYPE = (
@@ -73,7 +74,7 @@ class Feed(models.Model):
     title = models.CharField(max_length=500)
     slug = models.SlugField(max_length=500, blank=True)
     site_url = models.URLField(unique=True, max_length=500, blank=True)
-    feed_url = models.URLField(unique=True, max_length=500)
+    feed_url = models.URLField(unique=True, max_length=500, help_text='JSON and other feed types coming soon')
     active = models.BooleanField(default=True, db_index=True)
     feed_type = models.SmallIntegerField(choices=FEED_TYPE, default=1)
     feed_list = models.ForeignKey(FeedList, related_name='feed_lists', blank=True, null=True, on_delete=models.SET_NULL)

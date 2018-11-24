@@ -74,6 +74,43 @@ def TagView(request, tag_name_slug):
     ctx = {'object_list': feeds, 'title': tag }
     return render(request, 'aggregator/feed_list.html', ctx)
 
+@login_required
+def AddFeed(request):
+    #Lets users add new feeds to the aggregator.
+    instance = Feed(owner=request.user)
+    f = FeedModelForm(request.POST or None, instance=instance)
+    if f.is_valid():
+        f.save()
+        messages.add_message(
+            request, messages.INFO, 'Your feed has entered moderation. Please allow up to 1 week for review.')
+        return redirect('aggregator:Index')
+
+    ctx = {'form': f, 'adding': True}
+    return render(request, 'aggregator/edit-feed.html', ctx)
+
+@login_required
+def EditFeed(request, feed_id):
+    #Lets a user edit a feed they've previously added.
+    feed = get_object_or_404(Feed, pk=feed_id, owner=request.user)
+    f = FeedModelForm(request.POST or None, instance=feed)
+    if f.is_valid():
+        f.save()
+        return redirect('aggregator:Index')
+
+    ctx = {'form': f, 'feed': feed, 'adding': False}
+    return render(request, 'aggregator/edit-feed.html', ctx)
+
+
+@login_required
+def DeleteFeed(request, feed_id):
+    #Lets a user delete a feed they've previously added.
+    ## TODO: Make this a soft delete
+    feed = get_object_or_404(Feed, pk=feed_id, owner=request.user)
+    if request.method == 'POST':
+        feed.delete()
+        return redirect('aggregator:Index')
+    return render(request, 'aggregator/delete-confirm.html', {'feed': feed})
+
 class SearchListView(ListView):
     model = FeedItem
     paginate_by = 15

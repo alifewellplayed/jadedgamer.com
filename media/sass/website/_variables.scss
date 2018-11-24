@@ -3,6 +3,7 @@
 //Colors
 $primary:       #66a470 !default;
 //$secondary:   $gray-600 !default;
+$white: #fff;
 $body-bg:       #ededeb !default;
 $body-color:    #66595c !default;
 
@@ -13,6 +14,21 @@ $font-family-serif:       'ff-tisa-web-pro', serif, !default;
 //headings
 $headings-font-family: $font-family-serif !default;
 $headings-color: $primary !default;
+
+// Border Radius
+$border-radius:               0rem !default;
+$border-radius-lg:            0rem !default;
+$border-radius-sm:            0rem !default;
+
+//Dropdown
+$dropdown-bg:                       darken($primary, 8%) !default;
+$dropdown-border-color:             darken($primary, 8%) !default;
+$dropdown-border-radius:            0 !default;
+$dropdown-divider-bg:               darken($primary, 15%) !default;
+$dropdown-link-color:               lighten($body-color, 95%) !default;
+$dropdown-link-hover-color:         $white !default;
+$dropdown-link-hover-bg:            darken($primary, 5%) !default;
+$dropdown-header-color:             $white !default;
 
 //FontAwesome
 $fa-font-path: "../fonts" !default;

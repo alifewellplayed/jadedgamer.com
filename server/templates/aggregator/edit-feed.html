@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+  {% if adding %}
+    <h2 class="deck h4 mb-4">Submit A Website:</h2>
+  {% else %}
+    <h2 class="deck h4 mb-4">Edit {{ feed }}:</h2>
+  {% endif %}
+  <div class="row">
+    <div class="col-md-6">
+      <form method="POST" action="" id="add_feed_form" class="wide form-input">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group {% if field.errors %}is-invalid{% endif %}">
+          {% if field.errors %}
+            <div class="invalid-feedback"><p class="errors">{{ field.errors.as_text }}</p></div>
+          {% endif %}
+          {{ field }}
+          {% if field.help_text %}
+          <small id="passwordHelpBlock" class="form-text text-muted">{{ field.help_text|safe }}</small>
+          {% endif %}
+        </div>
+      {% endfor %}
+      {% if adding %}
+        <p class="submit"><input class="cta btn btn-primary" type="submit" value="Add Feed"></p>
+      {% else %}
+        <p class="submit"><input class="cta btn btn-primary" type="submit" value="Save"></p>
+      {% endif %}
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

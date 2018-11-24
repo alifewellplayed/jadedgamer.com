@@ -6,34 +6,36 @@ class FeedModelForm(forms.ModelForm):
     title = forms.CharField(
         max_length=250,
         widget=forms.TextInput(attrs={
-            'class': 'required',
-            'placeholder': 'Title of the resource / blog',
+            'class': 'required form-control',
+            'placeholder': 'Website name',
         }),
     )
     feed_url = forms.URLField(
         label='Feed URL',
+        help_text ='Only RSS is currently supported. Other formats coming soon.',
         widget=forms.TextInput(attrs={
-            'class': 'required',
-            'placeholder': 'Link to the RSS/Atom feed. Please only use Django-specific feeds.',
+            'class': 'required form-control',
+            'placeholder': 'Link to the RSS/Atom feed',
         }),
     )
-    public_url = forms.URLField(
+    site_url = forms.URLField(
         label='Public URL',
         widget=forms.TextInput(attrs={
-            'class': 'required',
+            'class': 'required form-control',
             'placeholder': 'Link to main page (i.e. blog homepage)',
         }),
     )
 
     class Meta:
         model = Feed
-        exclude = ('feed_type', 'owner', 'approval_status')
+        exclude = (
+            'id', 'feed_type', 'slug', 'owner', 'approval_status', 'active', 'feed_list',
+            'next_scheduled_update', 'last_story_date', 'subscribers', 'num_subscribers',
+            'has_feed_exception', 'favicon_color', 'favicon_not_found',
+            'search_indexed', 'pubsub_enabled', 'has_page_exception', 'tags', 'date_added', 'date_updated',
+
+        )
 
     def clean_feed_url(self):
         feed_url = self.cleaned_data.get('feed_url')
-        if feed_url and '//stackoverflow.com' in feed_url:
-            raise forms.ValidationError(
-                "Stack Overflow questions tagged with 'django' will appear "
-                "here automatically."
-            )
         return feed_url
