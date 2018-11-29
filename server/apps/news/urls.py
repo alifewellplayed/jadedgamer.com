@@ -8,4 +8,5 @@ from . import views
 app_name="news"
 urlpatterns = [
     path('', views.NewsList.as_view(), name='NewsLatest'),
+    path('submit/', views.AddNews, name='AddNews'),
 ]

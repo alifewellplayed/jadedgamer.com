@@ -15,6 +15,4 @@ urlpatterns = [
     path('feeds/tags/', views.FeedTagList, name = "FeedTagList"),
     path('feeds/tags/<slug:tag_name_slug>/', views.TagView, name ="FeedTagSingle"),
     path('search/', views.SearchListView.as_view(), name='Search'),
-
-    path('redirect_test/', views.RedirectTest, name='RedirectTest'),
 ]

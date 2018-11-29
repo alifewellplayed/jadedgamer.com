@@ -9,7 +9,7 @@
       <h2 class="h2 mb-4">Search</h2>
       {% for obj in object_list %}
       <div class="result mb-3">
-        <h3 class="h3">{{obj.title}}</h3>
+        <h3 class="h5">{{obj.title}}</h3>
         <div class="result-body">
           {{obj.summary}}
         </div>
@@ -18,7 +18,5 @@
       {%endfor%}
     </div>
   </div>
-
-  {% include "_includes/_search.html" %}
 </div>
 {% endblock %}
