@@ -12,7 +12,7 @@
         <li class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">News</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Latest</a>
+            <a class="dropdown-item" href="{% url 'news:NewsLatest' %}">Latest</a>
             <a class="dropdown-item" href="#">Trending</a>
           </div>
         </li>
@@ -28,6 +28,7 @@
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="{% url 'aggregator:AddFeed' %}">Submit Feed</a>
+            <a class="dropdown-item" href="{% url 'news:AddNews' %}">New Post</a>
           </div>
         </li>
         <li class="nav-item dropdown">
@@ -44,4 +45,19 @@
     </div><!-- /.navbar-collapse -->
   </div>
 </header>
+
+
+{% if messages %}
+<div class="container pt-4 messages">
+  {% for message in messages %}
+  <div class="alert alert-primary" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 {% endspaceless %}

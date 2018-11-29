@@ -13,3 +13,10 @@
 .list-feeditems {
   a:visited {color: darken($body-bg, 50%); }
 }
+
+.uppercase {text-transform: uppercase;}
+.title {
+  font-family: $font-family-sans-serif;
+  letter-spacing: .5px;
+  font-weight: bold;
+}

@@ -50,6 +50,7 @@ class NewsItemInstance(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="saved_news", verbose_name='user', blank=True, null=True, on_delete=models.SET_NULL )
     date_added = models.DateTimeField(verbose_name="When list was added to the site", auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    url = models.URLField(blank=True, max_length=510)
     note = models.TextField(blank=True)
 
     def _create_news_item(self):

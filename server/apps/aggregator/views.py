@@ -27,7 +27,7 @@ def Index(request):
     FeedQuery = Feed.objects.approved().order_by('title')
     for ft in FeedQuery:
         feeds.append((ft, ft.items()[0:ITEM_COUNT]))
-    ctx = { 'object_list': feeds, 'title': 'Home', }
+    ctx = { 'object_list': feeds, }
     tpl = 'aggregator/feed_list.html'
     return render(request, tpl, ctx)
 

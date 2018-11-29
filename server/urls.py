@@ -31,6 +31,7 @@ urlpatterns = [
     #Static Page
     path('about/', TemplateView.as_view(template_name="static/about.html"), name='page_about'),
     path('terms/', TemplateView.as_view(template_name="static/terms.html"), name='page_terms'),
+    path('dmca/', TemplateView.as_view(template_name="static/dmca.html"), name='page_dmca'),
     path('privacy/', TemplateView.as_view(template_name="static/privacy.html"), name='page_privacy'),
     path('tour/', TemplateView.as_view(template_name="static/tour.html"), name='page_tour'),
 

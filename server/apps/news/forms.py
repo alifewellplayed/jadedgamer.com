@@ -12,6 +12,7 @@ class NewsItemInstanceModelForm(forms.ModelForm):
 
     note = forms.CharField(
         max_length=250,
+        required=False,
         widget=forms.Textarea(attrs={
             'class': 'form-control',
             'placeholder': 'Optional Note',
@@ -20,6 +21,7 @@ class NewsItemInstanceModelForm(forms.ModelForm):
 
     url = forms.URLField(
         label='URL',
+        required=False,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'placeholder': 'https://',

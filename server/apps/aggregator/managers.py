@@ -48,7 +48,7 @@ class FeedItemManager(models.Manager):
             kwargs.pop('feed', None)
 
             # Don't update the date since most feeds get this wrong.
-            kwargs.pop('date_modified')
+            kwargs.pop('date_updated')
 
             for k, v in kwargs.items():
                 setattr(item, k, v)
