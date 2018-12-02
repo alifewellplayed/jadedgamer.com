@@ -28,6 +28,7 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
 	'jadedgamer.com', 'www.jadedgamer.com',
 	'jadedgamer.herokuapp.com', #Heroku
+    'beta.jadedgamer.com', # Heroku
     '8po2lakic6.execute-api.us-east-1.amazonaws.com', #AWS
 ]
 
