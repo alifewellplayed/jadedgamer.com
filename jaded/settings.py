@@ -16,9 +16,9 @@ from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(os.path.join(BASE_DIR, 'server/apps'))
-sys.path.append(os.path.join(BASE_DIR, 'server/util'))
-sys.path.append(os.path.join(BASE_DIR, 'server/vendor'))
+sys.path.append(os.path.join(BASE_DIR, 'jaded/apps'))
+sys.path.append(os.path.join(BASE_DIR, 'jaded/util'))
+sys.path.append(os.path.join(BASE_DIR, 'jaded/vendor'))
 
 ENABLE_CACHE = False
 
@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [
 	'jadedgamer.com', 'www.jadedgamer.com',
 	'jadedgamer.herokuapp.com', #Heroku
     'beta.jadedgamer.com', # Heroku
-    '8po2lakic6.execute-api.us-east-1.amazonaws.com', #AWS
+    '4mo7ycbo7k.execute-api.us-east-1.amazonaws.com', #AWS
 ]
 
 ADMINS = (('Tyler Rilling', 'tyler@jadedgamer.com'))
@@ -97,17 +97,17 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 ALLOW_NEW_REGISTRATIONS = False
-WSGI_APPLICATION = 'server.wsgi.application'
+WSGI_APPLICATION = 'jaded.wsgi.application'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 STATIC_ROOT = 'staticfiles'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'server/static'), )
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'jaded/static'), )
 TAGGIT_CASE_INSENSITIVE = True #django-taggit
 
 if ENABLE_S3:
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    STATIC_URL = os.environ.get('LIVE_STATIC_URL', 'https://static.example.com/')
-    MEDIA_URL = os.environ.get('LIVE_MEDIA_URL', 'https://static.example.com/media/')
+    STATIC_URL = os.environ.get('LIVE_STATIC_URL', 'https://static.jadedgamer.com/')
+    MEDIA_URL = os.environ.get('LIVE_MEDIA_URL', 'https://static.jadedgamer.com/media/')
 else:
     STATICFILES_STORAGE = 'coreExtend.storage.StaticFilesStorage'
     STATIC_URL = '/static/'
@@ -153,7 +153,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '4eJUc9x86aXSLG07QgM1qZskVYZTBsWRkRMQc
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ os.path.join(BASE_DIR, 'server/templates'), ],
+        'DIRS': [ os.path.join(BASE_DIR, 'jaded/templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -194,11 +194,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
-ROOT_URLCONF = 'server.urls'
+ROOT_URLCONF = 'jaded.urls'
 
 SUBDOMAIN_URLCONFS = {
-	None: 'server.urls',
-    'api': 'server.apps.api.urls',
+	None: 'jaded.urls',
+    'api': 'jaded.apps.api.urls',
 }
 
 #SESSION_COOKIE_DOMAIN = '.jadedgamer.com'

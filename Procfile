@@ -1,1 +1,1 @@
-web: gunicorn server.wsgi --max-requests 250
+web: gunicorn jaded.wsgi --max-requests 250

@@ -25,20 +25,20 @@ var gulp = require('gulp'),
 gulp.task('clean', function () {
   return del([
     'dist/',
-    'server/static/site',
-    'server/static/admin',
-    'server/**/*.pyc'
+    'jaded/static/site',
+    'jaded/static/admin',
+    'jaded/**/*.pyc'
   ]);
 });
 
 // Clear cache
 gulp.task('clean-cache', function () {
-  del(['server/**/*.pyc']);
+  del(['jaded/**/*.pyc']);
 });
 
 gulp.task('copy-dist', function() {
   gulp.src('dist/**/*.*')
-  .pipe(gulp.dest('server/static'));
+  .pipe(gulp.dest('jaded/static'));
 });
 
 // Copy fonts task
@@ -51,7 +51,7 @@ gulp.task('copy-fonts', function() {
 
 // Minify Images
 gulp.task('imagemin', function() {
-  return gulp.src('server/static_source/img/site/**/*.{jpg,png,gif,ico}')
+  return gulp.src('jaded/static_source/img/site/**/*.{jpg,png,gif,ico}')
   .pipe(imagemin())
   .pipe(gulp.dest('dist/img'))
 });
@@ -124,9 +124,9 @@ gulp.task('build-js', function(callback) {
 
 // configure which files to watch and what tasks to use on file changes
 gulp.task('watch', function() {
-  gulp.watch('server/static_source/coffee/**/*.js', ['brew-coffee', 'copy-dist']);
-  gulp.watch('server/static_source/js/**/*.js', ['build-js', 'copy-dist']);
-  gulp.watch('server/static_source/sass/**/*.scss', ['build-css', 'copy-dist' ] );
+  gulp.watch('jaded/static_source/coffee/**/*.js', ['brew-coffee', 'copy-dist']);
+  gulp.watch('jaded/static_source/js/**/*.js', ['build-js', 'copy-dist']);
+  gulp.watch('jaded/static_source/sass/**/*.scss', ['build-css', 'copy-dist' ] );
 });
 
 // Build task for theme/frontend

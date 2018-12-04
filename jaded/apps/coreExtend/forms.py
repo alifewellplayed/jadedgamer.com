@@ -56,7 +56,7 @@ class PasswordResetForm(PasswordResetForm):
 
             if not found_non_ldap_user:
                 # All found users are LDAP users, give error message
-                raise forms.ValidationError(_("Sorry, you cannot reset your password here as your user account is managed by another server."))
+                raise forms.ValidationError(_("Sorry, you cannot reset your password here as your user account is managed by another jaded."))
         else:
             # No user accounts exist
             raise forms.ValidationError(_("This email address is not recognised."))
