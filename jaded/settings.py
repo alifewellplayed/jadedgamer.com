@@ -126,6 +126,7 @@ AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '123')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME', 'static.example.com')
 AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_BUCKET_DOMAIN', 'static.example.com')
 AWS_S3_SECURE_URLS = True
+AWS_DEFAULT_ACL = None
 
 #from boto.s3.connection import OrdinaryCallingFormat
 #AWS_S3_CALLING_FORMAT = OrdinaryCallingFormat()
