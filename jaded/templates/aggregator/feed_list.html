@@ -5,8 +5,8 @@
 {% block body %}
 <div class="container my-5">
 
-  {% if title %}
-  <div class="mb-4"><h4 class="h6 title uppercase">{{ title }}</h4></div>
+  {% if breadcrumb %}
+  <div class="mb-4"><h4 class="h6 title uppercase">{{ breadcrumb }}</h4></div>
   {% endif %}
 
   <div class="row">
@@ -15,13 +15,13 @@
     <h6 class="h6 title pb-2">{{ feed.title }} <small class="pl-md-2"><a rel="nofollow" class="view-more" href="{{ feed.site_url }}">(View site)</a></small></h3>
     <ul class="list-unstyled list-feeditems">
       {% for item in latest_feeds %}
-      <li class="small py-1"><a href="{{item.link}}">{{item.title}}</a></li>
+      <li class="small py-1"><a href="{{item.link}}">{{item.title}}</a> <span class="datetime pl-1">{{item.date_added|timesince}} ago</span></li>
       {% endfor %}
     </ul>
   </div>
   {% if forloop.counter|divisibleby:3 %}
   </div>
-  <hr class="d-none d-md-block linebreak mt-0 mb-5" />
+  <hr class="d-none inebreak mt-0 mb-5" />
   <div class="row">
   {% endif %}
 

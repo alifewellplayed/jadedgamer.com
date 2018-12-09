@@ -4360,7 +4360,7 @@ hr {
 
 small,
 .small {
-  font-size: 80%;
+  font-size: 86%;
   font-weight: 400; }
 
 mark,
@@ -5710,7 +5710,7 @@ textarea.form-control {
   display: none;
   width: 100%;
   margin-top: 0.25rem;
-  font-size: 80%;
+  font-size: 86%;
   color: #28a745; }
 
 .valid-tooltip {
@@ -5795,7 +5795,7 @@ textarea.form-control {
   display: none;
   width: 100%;
   margin-top: 0.25rem;
-  font-size: 80%;
+  font-size: 86%;
   color: #dc3545; }
 
 .invalid-tooltip {
@@ -11329,3 +11329,6 @@ a.text-dark:hover, a.text-dark:focus {
   font-family: "jaf-bernino-sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   letter-spacing: .5px;
   font-weight: bold; }
+
+.datetime {
+  color: #727267; }

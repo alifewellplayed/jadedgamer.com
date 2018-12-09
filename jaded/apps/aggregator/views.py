@@ -27,7 +27,7 @@ def Index(request):
     FeedQuery = Feed.objects.approved().order_by('title')
     for ft in FeedQuery:
         feeds.append((ft, ft.items()[0:ITEM_COUNT]))
-    ctx = { 'object_list': feeds, }
+    ctx = { 'object_list': feeds, 'title': 'jadedgamer.com',}
     tpl = 'aggregator/feed_list.html'
     return render(request, tpl, ctx)
 
@@ -44,7 +44,7 @@ class AllFeedsListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(AllFeedsListView, self).get_context_data(**kwargs)
-        context.update({'title': 'All Feeds',})
+        context.update({'title': 'All Feeds | jadedgamer.com',})
         return context
 
 #List of all tags
@@ -61,7 +61,7 @@ def FeedTagList(request):
     # then alphabetize each letter's list
     for letter, val in result.items():
         val.sort(key=lambda x: x.name)
-    ctx = {'tags' : tags, 'alphabetized': result}
+    ctx = {'tags' : tags, 'alphabetized': result, 'title': 'Tags | jadedgamer.com',}
     template = 'aggregator/feed_tag_list.html'
     return render(request, template, ctx)
 
@@ -71,7 +71,7 @@ def TagView(request, tag_name_slug):
     tag = get_object_or_404(Tag, slug=tag_name_slug)
     for ft in Feed.objects.approved().filter(tags__name__in=[tag]).order_by('-title'):
         feeds.append((ft, ft.items()[0:ITEM_COUNT]))
-    ctx = {'object_list': feeds, 'title': tag }
+    ctx = {'object_list': feeds, 'title': '{0} | jadedgamer.com'.format(tag) }
     return render(request, 'aggregator/feed_list.html', ctx)
 
 @login_required
@@ -85,7 +85,7 @@ def AddFeed(request):
             request, messages.INFO, 'Your feed has entered moderation. Please allow up to 1 week for review.')
         return redirect('aggregator:Index')
 
-    ctx = {'form': f, 'adding': True}
+    ctx = {'form': f, 'adding': True, 'title': 'Submit A Feed | jadedgamer.com',}
     return render(request, 'aggregator/edit-feed.html', ctx)
 
 @login_required
@@ -97,7 +97,7 @@ def EditFeed(request, feed_id):
         f.save()
         return redirect('aggregator:Index')
 
-    ctx = {'form': f, 'feed': feed, 'adding': False}
+    ctx = {'form': f, 'feed': feed, 'adding': False, 'title': 'Edit Feed | jadedgamer.com',}
     return render(request, 'aggregator/edit-feed.html', ctx)
 
 
@@ -109,7 +109,7 @@ def DeleteFeed(request, feed_id):
     if request.method == 'POST':
         feed.delete()
         return redirect('aggregator:Index')
-    return render(request, 'aggregator/delete-confirm.html', {'feed': feed})
+    return render(request, 'aggregator/delete-confirm.html', {'feed': feed, 'title': 'Delete Feed | jadedgamer.com',})
 
 class SearchListView(ListView):
     model = FeedItem
@@ -127,3 +127,8 @@ class SearchListView(ListView):
             qs = qs.annotate(search=vectors).filter(search=query)
             qs = qs.annotate(rank=SearchRank(vectors, query)).order_by('-rank')
         return qs
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchListView, self).get_context_data(**kwargs)
+        context.update({'title': 'Search | jadedgamer.com',})
+        return context

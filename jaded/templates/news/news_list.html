@@ -6,17 +6,17 @@
 <div class="container my-5">
   {% for obj in object_list %}
   <div class="row py-1">
-  <div class="col-1">
+  <div class="col-1 text-right">
     {{ forloop.counter }}.
   </div>
   <div class="col-11">
     <p class="title mb-0">
-      <a class="h5 title" href="#">{{obj.title}}</a>
+      <a class="h6 title" href="#">{{obj.title}}</a>
       <span class="domain"></span>
     </p>
     <p class="tagline small">
       <span class="byline">By {{obj.user}}, </span>
-      <span class="datetime">submitted {{obj.date_added}} </span>
+      <span class="datetime">submitted {{obj.date_added|timesince}} ago</span>
     </p>
   </div>
   </div>

@@ -103,6 +103,7 @@ STATIC_ROOT = 'staticfiles'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'jaded/static'), )
 TAGGIT_CASE_INSENSITIVE = True #django-taggit
+FORCE_SCRIPT_NAME = ""
 
 if ENABLE_S3:
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -116,8 +117,9 @@ else:
 #Site Settings
 SITE_NAME = os.environ.get('SITE_NAME', 'jadedgamer.com')
 SITE_DESC =  os.environ.get('SITE_DESC', 'Just another news site.')
-SITE_URL =  os.environ.get('SITE_URL', '/')
+SITE_URL =  os.environ.get('SITE_URL', 'https://jadedgamer.com/')
 SITE_AUTHOR = os.environ.get('SITE_AUTHOR', 'Tyler Rilling')
+SITE_KEYWORDS = os.environ.get('SITE_KEYWORDS', 'Video games, videogames, video game news, videogame new, news')
 
 #Amazon S3
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

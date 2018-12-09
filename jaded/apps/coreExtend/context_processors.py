@@ -7,6 +7,7 @@ def template_settings(request):
         'network_desc': settings.SITE_DESC,
         'network_author': settings.SITE_AUTHOR,
         'network_url': settings.SITE_URL,
+        'network_keywords': settings.SITE_KEYWORDS,
         'network_register': settings.ALLOW_NEW_REGISTRATIONS,
         'BASE_URL': 'https://' + request.get_host(),
         'BASE_HOST': request.get_host().split(':')[0],
