@@ -9,9 +9,9 @@
       <h2 class="h2 mb-4">Search</h2>
       {% for obj in object_list %}
       <div class="result mb-3">
-        <h3 class="h5">{{obj.title}}</h3>
+        <h3 class="h5"><a href="{{obj.link}}">{{obj.title}}</a></h3>
         <div class="result-body">
-          {{obj.summary}}
+          {{obj.summary|striptags|truncatewords:140}}
         </div>
       </div>
 

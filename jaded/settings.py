@@ -6,7 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 if 'SERVERTYPE' in os.environ and os.environ['SERVERTYPE'] == 'AWS Lambda':
-    DEBUG = False
+    DEBUG = True
     ENABLE_S3 = True
 else:
     DEBUG = True
@@ -26,11 +26,31 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '0.0.0.0',
-	'jadedgamer.com', 'www.jadedgamer.com',
+	'jadedgamer.com',
+    'www.jadedgamer.com',
 	'jadedgamer.herokuapp.com', #Heroku
     'beta.jadedgamer.com', # Heroku
     '4mo7ycbo7k.execute-api.us-east-1.amazonaws.com', #AWS
+    'dmuo3cq1m9y99.cloudfront.net' #AWS
 ]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = [
+    'www.jadedgamer.com',
+    'jadedgamer.com',
+    '4mo7ycbo7k.execute-api.us-east-1.amazonaws.com',
+    'dmuo3cq1m9y99.cloudfront.net'
+]
+CORS_REPLACE_HTTPS_REFERER = True
+CSRF_COOKIE_DOMAIN = 'jadedgamer.com'
+CORS_ORIGIN_WHITELIST = (
+    'www.jadedgamer.com',
+    'jadedgamer.com',
+    '4mo7ycbo7k.execute-api.us-east-1.amazonaws.com',
+    'dmuo3cq1m9y99.cloudfront.net'
+)
 
 ADMINS = (('Tyler Rilling', 'tyler@jadedgamer.com'))
 MANAGERS = ADMINS
@@ -125,8 +145,8 @@ SITE_KEYWORDS = os.environ.get('SITE_KEYWORDS', 'Video games, videogames, video 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '123')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '123')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME', 'static.example.com')
-AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_BUCKET_DOMAIN', 'static.example.com')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME', 'static.jadedgamer.com')
+AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_BUCKET_DOMAIN', 'static.jadedgamer.com')
 AWS_S3_SECURE_URLS = True
 AWS_DEFAULT_ACL = None
 
@@ -201,10 +221,13 @@ ROOT_URLCONF = 'jaded.urls'
 
 SUBDOMAIN_URLCONFS = {
 	None: 'jaded.urls',
+    'account': 'jaded.urls',
     'api': 'jaded.apps.api.urls',
 }
 
-#SESSION_COOKIE_DOMAIN = '.jadedgamer.com'
+SESSION_COOKIE_DOMAIN = 'jadedgamer.com'
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # django-push settings
 PUSH_HUB = 'https://push.superfeedr.com/'
