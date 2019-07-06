@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Feed, FeedItem, FeedList
+from .models import Feed, FeedItem, FeedList, FeedListThrough
 
 def mark_approved(modeladmin, request, queryset):
     for item in queryset.iterator():
@@ -13,6 +13,11 @@ def mark_denied(modeladmin, request, queryset):
     for item in queryset.iterator():
         item.approval_status = 2 #denied = 2
         item.save()
+
+
+class FeedListThroughInline(admin.TabularInline):
+    model = FeedListThrough
+    extra = 1
 
 
 admin.site.register(
@@ -35,7 +40,7 @@ admin.site.register(
     date_heirarchy=['date_updated'],
 )
 
-admin.site.register(
-    FeedList,
-    prepopulated_fields={'slug': ('title',)},
-)
+class FeedListAdmin(admin.ModelAdmin):
+    inlines = (FeedListThroughInline,)
+    
+admin.site.register(FeedList, FeedListAdmin)

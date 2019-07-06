@@ -17,14 +17,15 @@ from taggit.models import Tag
 from redirect.models import LinkClick
 #from threadedcomments.models import ThreadedComment
 
-from .models import FeedItem, Feed, FeedList
+from .models import FeedItem, Feed, FeedList, FeedListThrough
 from .forms import FeedModelForm
 
 ITEM_COUNT = 5
 
 def Index(request):
     feeds = []
-    FeedQuery = Feed.objects.approved().order_by('title')
+    FeedQuery = Feed.objects.approved().filter(feedlist__slug='default').order_by('-group')
+
     for ft in FeedQuery:
         feeds.append((ft, ft.items()[0:ITEM_COUNT]))
     ctx = { 'object_list': feeds, 'title': 'jadedgamer.com',}

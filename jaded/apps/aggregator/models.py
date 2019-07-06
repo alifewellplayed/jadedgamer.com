@@ -34,10 +34,16 @@ FEED_TYPE = (
     (3, 'Twitter'),
 )
 
+FEED_DISPLAY = (
+    (0, 'default'),
+    (1, 'Display Thumbnails'),
+)
+
 FEEDLIST_CHOICES = (
     (True, 'Only me'),
     (False, 'Everyone')
 )
+
 
 class FeedList(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -47,7 +53,7 @@ class FeedList(models.Model):
     date_added = models.DateTimeField(verbose_name="When list was added to the site", auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='lists', blank=True, null=True, on_delete=models.SET_NULL )
-    feeds = models.ManyToManyField('Feed', blank=True)
+    feeds = models.ManyToManyField('Feed', through='FeedListThrough', blank=True)
     description = models.TextField(max_length=500, blank=True, null=True)
     objects = FeedListManager()
 
@@ -56,6 +62,9 @@ class FeedList(models.Model):
 
     def get_absolute_url(self):
         return "/lists/%s/" % (self.id)
+    
+    def feeds_ordered(self):
+        return [f.feed for f in FeedListThrough.objects.filter(feedlist=self).order_by('order')]
 
     def items(self):
         feeds = list(self.feeds.all())
@@ -67,7 +76,7 @@ class FeedList(models.Model):
         super(FeedList, self).save(**kwargs)
 
     class Meta:
-        ordering = ("-date_added",)
+        ordering = ("date_added",)
 
 class Feed(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -77,7 +86,8 @@ class Feed(models.Model):
     feed_url = models.URLField(unique=True, max_length=500, help_text='JSON and other feed types coming soon')
     active = models.BooleanField(default=True, db_index=True)
     feed_type = models.SmallIntegerField(choices=FEED_TYPE, default=1)
-    feed_list = models.ForeignKey(FeedList, related_name='feed_lists', blank=True, null=True, on_delete=models.SET_NULL)
+    feed_display = models.SmallIntegerField(choices=FEED_DISPLAY, default=0)
+  #  feed_list = models.ForeignKey(FeedList, related_name='feed_lists', blank=True, null=True, on_delete=models.SET_NULL)
     approval_status = models.SmallIntegerField(choices=STATUS_CHOICES, default=1)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='feeds', on_delete=models.SET_NULL)
     date_added = models.DateTimeField(auto_now_add=True)
@@ -127,7 +137,7 @@ class Feed(models.Model):
             pass
 
     class Meta:
-        ordering = ("title",)
+        ordering = ("-title",)
 
 class FeedItem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -155,6 +165,18 @@ class FeedItem(models.Model):
 
     def get_absolute_url(self):
         return self.link
+
+class FeedListThrough(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    feed = models.ForeignKey(Feed, related_name='group', null=True, on_delete=models.SET_NULL)
+    feedlist = models.ForeignKey(FeedList, related_name='group', null=True, on_delete=models.SET_NULL)
+    order = models.SmallIntegerField(default=0)
+
+    def __str__(self):
+        return "%s is in list %s" % (self.feed, self.feedlist)
+
+    class Meta:
+        ordering = ("-order",)
 
 
 def feed_updated(sender, notification, **kwargs):

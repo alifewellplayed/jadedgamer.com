@@ -42,14 +42,16 @@ CSRF_TRUSTED_ORIGINS = [
     'jadedgamer.com',
     '4mo7ycbo7k.execute-api.us-east-1.amazonaws.com',
     'dmuo3cq1m9y99.cloudfront.net'
+    '5d89a565ccf3467bf90667ebfc36953c.cloudfront.net',
 ]
 CORS_REPLACE_HTTPS_REFERER = True
-CSRF_COOKIE_DOMAIN = 'jadedgamer.com'
+#CSRF_COOKIE_DOMAIN = 'jadedgamer.com'
 CORS_ORIGIN_WHITELIST = (
     'www.jadedgamer.com',
     'jadedgamer.com',
     '4mo7ycbo7k.execute-api.us-east-1.amazonaws.com',
     'dmuo3cq1m9y99.cloudfront.net'
+    '5d89a565ccf3467bf90667ebfc36953c.cloudfront.net',
 )
 
 ADMINS = (('Tyler Rilling', 'tyler@jadedgamer.com'))
@@ -96,7 +98,6 @@ else:
         }
     }
 
-
 # ====================
 # = #Global Settings =
 # ====================
@@ -136,7 +137,7 @@ else:
 
 #Site Settings
 SITE_NAME = os.environ.get('SITE_NAME', 'jadedgamer.com')
-SITE_DESC =  os.environ.get('SITE_DESC', 'Just another news site.')
+SITE_DESC =  os.environ.get('SITE_DESC', 'Just another video game news site.')
 SITE_URL =  os.environ.get('SITE_URL', 'https://jadedgamer.com/')
 SITE_AUTHOR = os.environ.get('SITE_AUTHOR', 'Tyler Rilling')
 SITE_KEYWORDS = os.environ.get('SITE_KEYWORDS', 'Video games, videogames, video game news, videogame new, news')
@@ -224,10 +225,6 @@ SUBDOMAIN_URLCONFS = {
     'account': 'jaded.urls',
     'api': 'jaded.apps.api.urls',
 }
-
-SESSION_COOKIE_DOMAIN = 'jadedgamer.com'
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # django-push settings
 PUSH_HUB = 'https://push.superfeedr.com/'
