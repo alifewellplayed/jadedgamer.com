@@ -9,6 +9,7 @@
     </button>
     <div class="collapse navbar-collapse" id="side-header-collapse">
       <ul class="navbar-nav ml-auto">
+        {% if user.is_authenticated %}
         <li class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Explore</a>
           <div class="dropdown-menu">
@@ -16,7 +17,6 @@
             <a class="dropdown-item" href="{% url 'aggregator:FeedTagList' %}">Tags</a>
           </div>
         </li>
-        {% if user.is_authenticated %}
         <li class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></a>
           <div class="dropdown-menu">
@@ -32,6 +32,7 @@
           </div>
         </li>
         {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'page_about' %}">About</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'coreExtend:Login' %}">Login</a></li>
         {% endif %}
       </ul>
