@@ -78,13 +78,12 @@ gulp.task('build-css', function() {
   return gulp.src('media/sass/site.scss')
   .pipe(sass().on('error', sass.logError))
   .pipe(autoprefixer({
-    browsers: ['last 2 versions'],
     cascade: false
   }))
-  .pipe(gulp.dest('dist/css'))
+  .pipe(gulp.dest('jaded/static/css'))
   .pipe(cleanCSS())
   .pipe(rename('site.min.css'))
-  .pipe(gulp.dest('dist/css'))
+  .pipe(gulp.dest('jaded/static/css'))
   .on('error', sass.logError)
 });
 
@@ -100,7 +99,7 @@ gulp.task('concat-js', function() {
   .pipe(sourcemaps.init())
   .pipe(concat('site.js'))
   .pipe(sourcemaps.write('./maps'))
-  .pipe(gulp.dest('dist/js'));
+  .pipe(gulp.dest('jaded/static/js'));
 });
 
 // configure the jshint task
@@ -112,10 +111,10 @@ gulp.task('jshint', function() {
 
 // Shrinks all the site js
 gulp.task('shrink-js', function() {
-  return gulp.src('dist/js/site.js')
+  return gulp.src('jaded/static/js/site.js')
   .pipe(uglify())
   .pipe(rename('site.min.js'))
-  .pipe(gulp.dest('dist/js'))
+  .pipe(gulp.dest('jaded/static/js'))
 });
 
 // Javascript build task for frontend
