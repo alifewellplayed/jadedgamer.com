@@ -20,7 +20,7 @@ from redirect.models import LinkClick
 from .models import FeedItem, Feed, FeedList, FeedListThrough
 from .forms import FeedModelForm
 
-ITEM_COUNT = 5
+ITEM_COUNT = 6
 
 def Index(request):
     feeds = []

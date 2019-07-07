@@ -33,7 +33,7 @@ class BlockedIp(models.Model):
 
 class LinkClick(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
-    link = models.ForeignKey(FeedItem, null=True, on_delete=models.SET_NULL)
+    link = models.ForeignKey(FeedItem, related_name='clicks', null=True, on_delete=models.CASCADE)
     referer = models.CharField(max_length=512)
     user_agent = models.CharField(max_length=1024, null=True)
     ip_addr = models.GenericIPAddressField()

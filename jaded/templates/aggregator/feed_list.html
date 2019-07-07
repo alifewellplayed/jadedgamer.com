@@ -11,19 +11,13 @@
 
   <div class="row">
   {% for feed, latest_feeds in object_list %}
-  <div class="col-md-4 site-feed mb-5">
-    <h6 class="h6 title pb-2">{{ feed.title }} <small class="pl-md-2"><a rel="nofollow" class="view-more" href="{{ feed.site_url }}">(View site)</a></small></h3>
-    <ul class="list-unstyled list-feeditems">
-      {% for item in latest_feeds %}
-      <li class="small py-1"><a href="{{item.link}}">{{item.title}}</a> <span class="datetime pl-1">{{item.date_added|timesince}} ago</span></li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% if forloop.counter|divisibleby:3 %}
-  </div>
-  <hr class="d-none inebreak mt-0 mb-5" />
-  <div class="row">
+
+  {% if feed.feed_display == 1 %}
+  {% include "aggregator/feed/feed_with_thumbnails.html" %}
+  {% else %}
+  {% include "aggregator/feed/default.html" %}
   {% endif %}
+  
 
   {% endfor %}
   </div>

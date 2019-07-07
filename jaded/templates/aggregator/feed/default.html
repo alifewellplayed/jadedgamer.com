@@ -1,0 +1,8 @@
+<div class="col-md-4 site-feed mb-5">
+    <h6 class="h6 title pb-2">{{ feed.title }} <small class="pl-md-2"><a rel="nofollow" class="view-more" href="{{ feed.site_url }}">(View site)</a></small></h3>
+    <ul class="list-unstyled list-feeditems">
+      {% for item in latest_feeds %}
+      <li class="small py-1"><a href="{{item.link}}">{{item.title}}</a> <span class="datetime pl-1">{{item.date_added|timesince}} ago</span></li>
+      {% endfor %}
+    </ul>
+  </div>

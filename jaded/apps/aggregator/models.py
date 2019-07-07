@@ -143,6 +143,7 @@ class FeedItem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     guid = models.CharField(max_length=500, unique=True, db_index=True)
     feed = models.ForeignKey(Feed, blank=True, null=True, on_delete=models.SET_NULL)
+    thumbnail_url = models.URLField(max_length=500, blank=True)
     title = models.CharField(max_length=500)
     original_title = models.CharField(max_length=500)
     link = models.URLField(max_length=500)
@@ -153,9 +154,9 @@ class FeedItem(models.Model):
     tags = TaggableManager(through=UUIDTaggedItem, blank=True)
     objects = FeedItemManager()
 
-    def clicks(self):
-        points = FeedItem.objects.filter(linkclick__link=self)
-        return points.count()
+    #def clicks(self):
+    #    points = LinkClick.objects.filter(link=self)
+    #    return points.count()
 
     class Meta:
         ordering = ("-date_added",)

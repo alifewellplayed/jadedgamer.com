@@ -109,6 +109,11 @@ class FeedUpdateWorker(threading.Thread):
             else:
                 content = u""
 
+            if hasattr(entry, "media_content"):
+                thumbnail_url = entry.media_content[0]['url']
+            else: 
+                thumbnail_url = u""
+
             try:
                 if entry.has_key('modified_parsed'):
                     date_modified = datetime.datetime.fromtimestamp(time.mktime(entry.modified_parsed))
@@ -120,13 +125,15 @@ class FeedUpdateWorker(threading.Thread):
                     date_modified = datetime.datetime.now()
             except TypeError:
                 date_modified = datetime.datetime.now()
+            
 
             FeedItem.objects.create_or_update_by_guid(guid,
                 feed = feed,
                 title = title,
                 link = link,
                 summary = content,
-                date_updated = date_modified
+                date_updated = date_modified,
+                thumbnail_url = thumbnail_url
             )
 
         self.log.debug('Done with %s.' % feed)
