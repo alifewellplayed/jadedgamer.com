@@ -112,7 +112,7 @@ class Feed(models.Model):
         return "/sites/%s/" % (self.slug,)
 
     def items(self):
-        return FeedItem.objects.filter(feed=self)[:10]
+        return FeedItem.objects.filter(feed=self)[:6]
 
     def item_count(self):
         item_counts = FeedItem.objects.filter(feed=self).count()

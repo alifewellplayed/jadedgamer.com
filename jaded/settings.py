@@ -1,5 +1,6 @@
 import os
 import sys
+import datetime
 from pathlib import Path
 import json
 from dotenv import load_dotenv, find_dotenv
@@ -154,14 +155,31 @@ AWS_DEFAULT_ACL = None
 #from boto.s3.connection import OrdinaryCallingFormat
 #AWS_S3_CALLING_FORMAT = OrdinaryCallingFormat()
 
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
+]
+
 REST_FRAMEWORK = {
-    'PAGINATE_BY': 25, # Default to 25
-    'PAGINATE_BY_PARAM': 'page_size', # Allow client to override, using `?page_size=xxx`.
-    'MAX_PAGINATE_BY': 100, # Maximum limit allowed when using `?page_size=xxx`.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
 }
+
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'jaded.utils.my_jwt_response_handler',
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=36000),
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+}
+
 
 # ===========================
 # = Django-specific Modules =
@@ -259,6 +277,7 @@ INSTALLED_APPS = (
     'news',
     'redirect',
     'voting',
+    'api.apps.ApiConfig',
 )
 
 LOGGING = {
