@@ -29,6 +29,7 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
 	'jadedgamer.com',
     'www.jadedgamer.com',
+    'api.jadedgamer.com',
 	'jadedgamer.herokuapp.com', #Heroku
     'beta.jadedgamer.com', # Heroku
     '4mo7ycbo7k.execute-api.us-east-1.amazonaws.com', #AWS
@@ -40,6 +41,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     'www.jadedgamer.com',
+    'api.jadedgamer.com',
     'jadedgamer.com',
     '4mo7ycbo7k.execute-api.us-east-1.amazonaws.com',
     'dmuo3cq1m9y99.cloudfront.net'
@@ -50,9 +52,15 @@ CORS_REPLACE_HTTPS_REFERER = True
 CORS_ORIGIN_WHITELIST = (
     'www.jadedgamer.com',
     'jadedgamer.com',
+    'api.jadedgamer.com',
     '4mo7ycbo7k.execute-api.us-east-1.amazonaws.com',
     'dmuo3cq1m9y99.cloudfront.net'
     '5d89a565ccf3467bf90667ebfc36953c.cloudfront.net',
+    'localhost:5000',
+    'localhost:8000',
+    '127.0.0.1:5000',
+    '0.0.0.0:5000',
+    '127.0.0.1:8000',
 )
 
 ADMINS = (('Tyler Rilling', 'tyler@jadedgamer.com'))
@@ -180,7 +188,6 @@ JWT_AUTH = {
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 }
 
-
 # ===========================
 # = Django-specific Modules =
 # ===========================
@@ -216,6 +223,7 @@ TEMPLATES = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -240,8 +248,6 @@ ROOT_URLCONF = 'jaded.urls'
 
 SUBDOMAIN_URLCONFS = {
 	None: 'jaded.urls',
-    'account': 'jaded.urls',
-    'api': 'jaded.apps.api.urls',
 }
 
 # django-push settings
@@ -270,6 +276,7 @@ INSTALLED_APPS = (
     'taggit',
     'vote',
     'django_push.subscriber',
+    'corsheaders',
 
     #Internal
     'coreExtend',

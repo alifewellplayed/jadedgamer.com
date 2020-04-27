@@ -18,7 +18,7 @@ class FeedSerializer(serializers.ModelSerializer):
   items = FeedItemSerializer(many=True, read_only=True)
   class Meta:
     model = Feed
-    fields = ['id', 'title', 'slug', 'site_url', 'feed_url', 'items', 'date_added', 'date_updated']
+    fields = ['id', 'title', 'slug', 'site_url', 'feed_url', 'feed_display', 'items', 'date_added', 'date_updated']
 
 
 class UserSerializer(serializers.ModelSerializer):

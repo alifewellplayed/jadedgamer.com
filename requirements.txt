@@ -23,5 +23,4 @@ feedparser==5.2.1
 djangorestframework
 djangorestframework-jwt
 django-cors-headers
-
 #git+https://github.com/underlost/Zappa.git
