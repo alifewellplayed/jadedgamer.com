@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
     'api.jadedgamer.com',
 	'jadedgamer.herokuapp.com', #Heroku
     'beta.jadedgamer.com', # Heroku
-    '4mo7ycbo7k.execute-api.us-east-1.amazonaws.com', #AWS
+    'rfk5ukgte4.execute-api.us-east-1.amazonaws.com',  # AWS
     'dmuo3cq1m9y99.cloudfront.net' #AWS
 ]
 
@@ -43,7 +43,7 @@ CSRF_TRUSTED_ORIGINS = [
     'www.jadedgamer.com',
     'api.jadedgamer.com',
     'jadedgamer.com',
-    '4mo7ycbo7k.execute-api.us-east-1.amazonaws.com',
+    'rfk5ukgte4.execute-api.us-east-1.amazonaws.com',  # AWS
     'dmuo3cq1m9y99.cloudfront.net'
     '5d89a565ccf3467bf90667ebfc36953c.cloudfront.net',
 ]
@@ -53,7 +53,7 @@ CORS_ORIGIN_WHITELIST = (
     'www.jadedgamer.com',
     'jadedgamer.com',
     'api.jadedgamer.com',
-    '4mo7ycbo7k.execute-api.us-east-1.amazonaws.com',
+    'rfk5ukgte4.execute-api.us-east-1.amazonaws.com',  # AWS
     'dmuo3cq1m9y99.cloudfront.net'
     '5d89a565ccf3467bf90667ebfc36953c.cloudfront.net',
     'localhost:5000',
