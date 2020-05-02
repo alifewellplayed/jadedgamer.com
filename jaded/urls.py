@@ -24,14 +24,9 @@ urlpatterns = [
     path('404/', TemplateView.as_view(template_name="404.html"), name="page_404"),
     path('500/', TemplateView.as_view(template_name="500.html"), name="page_500"),
 
-    # Apps
+    #Handle redirects
     path('r/', include('redirect.urls')),
-    path('news/', include('news.urls')),
-    path('', include('coreExtend.urls')),
-    path('', include('aggregator.urls')),
 
-    #Sitemap
-    #url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
     # django-push
     path('subscriber/', include('django_push.subscriber.urls')),

@@ -1,32 +1,29 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
+from rest_framework import generics, permissions, authentication, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 
+from api.serializers import NewsItemSerializer
 from .models import NewsItem, NewsItemInstance
-from .forms import NewsItemInstanceModelForm
 
-class NewsList(ListView):
-    template_name = 'news/news_list.html'
+import logging
+logger = logging.getLogger('default')
 
-    def get_queryset(self):
-        return NewsItem.objects.public()
+@permission_classes((AllowAny, ))
+class LatestView(APIView):
+  def get(self, request, format=None):
+    queryset = NewsItem.objects.public()
+    serializer = NewsItemSerializer(queryset, many=True)
+    return Response({
+        'data': serializer.data,
+    })
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-
-@login_required
-def AddNews(request):
-    #Lets users add new feeds to the aggregator.
-    instance = NewsItemInstance(user=request.user)
-    f = NewsItemInstanceModelForm(request.POST or None, instance=instance)
-    if f.is_valid():
-        f.save()
-        messages.add_message(
-            request, messages.INFO, 'News item added.')
-        return redirect('aggregator:Index')
-
-    ctx = {'form': f, 'adding': True}
-    return render(request, 'news/edit-news.html', ctx)
+@permission_classes((AllowAny, ))
+class PopularView(APIView):
+  def get(self, request, format=None):
+    queryset = NewsItem.objects.public()
+    serializer = NewsItemSerializer(queryset, many=True)
+    return Response({
+        'data': serializer.data,
+    })

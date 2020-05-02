@@ -9,9 +9,20 @@ from django.urls import reverse
 from django.core import cache
 from django.template import RequestContext
 
+from rest_framework import generics, permissions, authentication, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+
+from api.serializers import UserSerializer
+
 from .forms import AccountModelForm, UserCreationForm
 from .models import Account
 from .util.utils import get_redirect_url
+
+import logging
+logger = logging.getLogger('default')
 
 def register(request):
     success_url = get_redirect_url(request)
@@ -75,3 +86,17 @@ def EditAccount(request):
         f = AccountModelForm(instance=account)
         variables = {'form': f, 'user': account, 'account_settings': True,}
     return render(request, 'coreExtend/account/settings.html', variables)
+
+
+class current_user(APIView):
+  def get_object(self):
+    try:
+      return User.objects.get(pk=self.request.user.id)
+    except User.DoesNotExist:
+      raise Http404
+
+  def get(self, request, format=None):
+    user_serializer = UserSerializer(request.user)
+    return Response({
+      'user': user_serializer.data,
+    })
