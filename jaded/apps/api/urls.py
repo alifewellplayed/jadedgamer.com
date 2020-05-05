@@ -8,10 +8,10 @@ from news import views as newsViews
 lists_endpoint = [
   path('default/', feedViews.DefaultListView.as_view(), name='DefaultListView'),
   path('all/', feedViews.AllFeedsListView.as_view(), name='AllListView'),
-  path('search/<str:search_q>/', feedViews.SearchFeedItems.as_view(), name='feeditems-search'),
 ]
 
 news_endpoint = [
+  path('', feedViews.FeedItemAPIView.as_view()),
   path('latest/', newsViews.LatestView.as_view(), name='LatestNews'),
   path('popular/', newsViews.PopularView.as_view(), name='PopularNews'),
 ]

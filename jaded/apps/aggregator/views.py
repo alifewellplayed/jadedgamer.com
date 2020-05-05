@@ -1,4 +1,5 @@
 
+from rest_framework import filters
 import json
 from collections import OrderedDict
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
@@ -13,6 +14,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from rest_framework import filters
+
 from api.serializers import FeedSerializer, FeedItemSerializer
 from .models import FeedItem, Feed, FeedList, FeedListThrough
 from .forms import FeedModelForm
@@ -37,22 +40,12 @@ class AllFeedsListView(APIView):
       'feeds': serializer.data,
     })
 
-#serch API
 @permission_classes((AllowAny, ))
-class SearchFeedItems(APIView):
-    def get(self, request, search_q, format=None):
-        qs = FeedItem.objects.all()
-        keywords = search_q
-        query = SearchQuery(keywords)
-        title_vector = SearchVector('title', weight='A')
-        content_vector = SearchVector('summary', weight='B')
-        vectors = title_vector + content_vector
-        qs = qs.annotate(search=vectors).filter(search=query)
-        qs = qs.annotate(rank=SearchRank(vectors, query)).order_by('-rank')
-        serializer = FeedItemSerializer(qs, many=True)
-        return Response({
-            'data': serializer.data
-        })
+class FeedItemAPIView(generics.ListCreateAPIView):
+    search_fields = ['title', 'summary', 'description']
+    filter_backends = (filters.SearchFilter,)
+    queryset = FeedItem.objects.all()
+    serializer_class = FeedItemSerializer
 
 #List of all tags
 @permission_classes((AllowAny, ))
