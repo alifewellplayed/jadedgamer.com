@@ -18,6 +18,9 @@ mixpanel>=4.3.2
 zappa>=0.51.0
 django-push
 feedparser==5.2.1
+nltk
+numpy
+beautifulsoup4
 
 #API
 djangorestframework
