@@ -8,22 +8,21 @@ from api.serializers import NewsItemSerializer
 from .models import NewsItem, NewsItemInstance
 
 import logging
-logger = logging.getLogger('default')
 
-@permission_classes((AllowAny, ))
+logger = logging.getLogger("default")
+
+
+@permission_classes((AllowAny,))
 class LatestView(APIView):
-  def get(self, request, format=None):
-    queryset = NewsItem.objects.public()
-    serializer = NewsItemSerializer(queryset, many=True)
-    return Response({
-        'data': serializer.data,
-    })
+    def get(self, request, format=None):
+        queryset = NewsItem.objects.public()
+        serializer = NewsItemSerializer(queryset, many=True)
+        return Response({"data": serializer.data,})
 
-@permission_classes((AllowAny, ))
+
+@permission_classes((AllowAny,))
 class PopularView(APIView):
-  def get(self, request, format=None):
-    queryset = NewsItem.objects.public()
-    serializer = NewsItemSerializer(queryset, many=True)
-    return Response({
-        'data': serializer.data,
-    })
+    def get(self, request, format=None):
+        queryset = NewsItem.objects.public()
+        serializer = NewsItemSerializer(queryset, many=True)
+        return Response({"data": serializer.data,})

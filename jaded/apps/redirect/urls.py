@@ -4,7 +4,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from . import views
 
-app_name="redirect"
+app_name = "redirect"
 urlpatterns = [
-    path('<slug:slug>/', views.LinkRedirect, name = 'link_redirect'),
+    path("<slug:slug>/", views.LinkRedirect, name="link_redirect"),
 ]

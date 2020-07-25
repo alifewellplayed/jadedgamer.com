@@ -10,13 +10,21 @@ from coreExtend.models import UUIDTaggedItem
 
 from .managers import NewsItemManager
 
+
 class NewsItem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     url = models.URLField(blank=True, max_length=510)
     title = models.CharField(max_length=510)
-    slug = models.SlugField(unique_for_date='date_added', max_length=510)
+    slug = models.SlugField(unique_for_date="date_added", max_length=510)
     note = models.TextField(blank=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="newsItems", verbose_name='user', blank=True, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="newsItems",
+        verbose_name="user",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
     date_added = models.DateTimeField(verbose_name="When list was added to the site", auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     is_hidden = models.BooleanField(default=False)
@@ -38,16 +46,25 @@ class NewsItem(models.Model):
         super(NewsItem, self).save(**kwargs)
 
     class Meta:
-        ordering = ('-date_added',)
-        db_table = 'news_item'
+        ordering = ("-date_added",)
+        db_table = "news_item"
 
 
 class NewsItemInstance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    newsitem = models.ForeignKey(NewsItem, related_name="saved_instances", verbose_name='News', on_delete=models.CASCADE)
+    newsitem = models.ForeignKey(
+        NewsItem, related_name="saved_instances", verbose_name="News", on_delete=models.CASCADE
+    )
     title = models.CharField(max_length=510)
     slug = models.SlugField(max_length=510)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="saved_news", verbose_name='user', blank=True, null=True, on_delete=models.SET_NULL )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="saved_news",
+        verbose_name="user",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
     date_added = models.DateTimeField(verbose_name="When list was added to the site", auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     url = models.URLField(blank=True, max_length=510)
@@ -78,7 +95,7 @@ class NewsItemInstance(models.Model):
             news_item.delete()
 
     def __str__(self):
-        return "%(news_item)s for %(user)s" % {'news_item':self.news_item, 'user':self.user}
+        return "%(news_item)s for %(user)s" % {"news_item": self.news_item, "user": self.user}
 
     class Meta:
-        db_table = 'news_item_instance'
+        db_table = "news_item_instance"

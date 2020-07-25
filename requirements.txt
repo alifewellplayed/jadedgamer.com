@@ -20,6 +20,7 @@ django-push
 feedparser==5.2.1
 nltk
 numpy
+networkx
 beautifulsoup4
 
 #API

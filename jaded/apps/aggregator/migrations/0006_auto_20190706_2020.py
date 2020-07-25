@@ -6,21 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('aggregator', '0005_auto_20190705_2212'),
+        ("aggregator", "0005_auto_20190705_2212"),
     ]
 
     operations = [
-        migrations.AlterModelOptions(
-            name='feed',
-            options={'ordering': ('-title',)},
-        ),
-        migrations.AlterModelOptions(
-            name='feedlist',
-            options={'ordering': ('date_added',)},
-        ),
+        migrations.AlterModelOptions(name="feed", options={"ordering": ("-title",)},),
+        migrations.AlterModelOptions(name="feedlist", options={"ordering": ("date_added",)},),
         migrations.AddField(
-            model_name='feeditem',
-            name='thumbnail_url',
-            field=models.URLField(blank=True, max_length=500),
+            model_name="feeditem", name="thumbnail_url", field=models.URLField(blank=True, max_length=500),
         ),
     ]

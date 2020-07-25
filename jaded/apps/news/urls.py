@@ -5,8 +5,8 @@ from django.views.decorators.cache import cache_page
 
 from . import views
 
-app_name="news"
+app_name = "news"
 urlpatterns = [
-    path('', views.NewsList.as_view(), name='NewsLatest'),
-    path('submit/', views.AddNews, name='AddNews'),
+    path("", views.NewsList.as_view(), name="NewsLatest"),
+    path("submit/", views.AddNews, name="AddNews"),
 ]

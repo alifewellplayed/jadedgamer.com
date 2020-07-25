@@ -12,36 +12,37 @@ from taggit.managers import TaggableManager
 from taggit.models import GenericUUIDTaggedItemBase, TaggedItemBase
 
 GENDER_CHOICES = (
-	('F', _('Female')),
-	('M', _('Male')),
-	('P', _('Pirate')),
-	('N', _('Ninja')),
-	('R', _('Robot')),
-	('O', _('Other')),
+    ("F", _("Female")),
+    ("M", _("Male")),
+    ("P", _("Pirate")),
+    ("N", _("Ninja")),
+    ("R", _("Robot")),
+    ("O", _("Other")),
 )
+
 
 class Account(AbstractUser):
 
-    #Profile Settings
+    # Profile Settings
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
     location = models.CharField(max_length=255, blank=True)
     url = models.URLField(max_length=500, blank=True)
 
-    #Misc Settings
+    # Misc Settings
     hide_mobile = models.BooleanField(default=False)
     last_seen_on = models.DateTimeField(default=datetime.datetime.now)
     preferences = models.TextField(default="{}")
     view_settings = models.TextField(default="{}")
     send_emails = models.BooleanField(default=False)
-    is_beta	= models.BooleanField(default=True)
+    is_beta = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = 'Account'
-        verbose_name_plural = 'Accounts'
-        db_table = 'Account'
+        verbose_name = "Account"
+        verbose_name_plural = "Accounts"
+        db_table = "Account"
 
     def hash(self):
-        hashed = hashlib.md5(self.email.encode('utf-8')).hexdigest()
+        hashed = hashlib.md5(self.email.encode("utf-8")).hexdigest()
         return hashed
 
     def __unicode__(self):
@@ -57,5 +58,5 @@ class UUIDTaggedItem(GenericUUIDTaggedItemBase, TaggedItemBase):
     # tag = models.ForeignKey(Tag, related_name="uuid_tagged_items", on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = 'Tag'
-        verbose_name_plural = 'Tags'
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"

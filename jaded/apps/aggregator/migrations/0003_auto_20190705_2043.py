@@ -8,43 +8,43 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('aggregator', '0002_auto_20181124_1002'),
+        ("aggregator", "0002_auto_20181124_1002"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='FeedListThrough',
+            name="FeedListThrough",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('order', models.SmallIntegerField(default=0)),
+                ("id", models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ("order", models.SmallIntegerField(default=0)),
             ],
         ),
-        migrations.RemoveField(
-            model_name='feed',
-            name='feed_list',
-        ),
-        migrations.RemoveField(
-            model_name='feedlist',
-            name='feeds',
+        migrations.RemoveField(model_name="feed", name="feed_list",),
+        migrations.RemoveField(model_name="feedlist", name="feeds",),
+        migrations.AlterField(
+            model_name="feed",
+            name="approval_status",
+            field=models.SmallIntegerField(
+                choices=[(1, "Pending"), (2, "Denied"), (3, "Approved"), (4, "Deleted")], default=1
+            ),
         ),
         migrations.AlterField(
-            model_name='feed',
-            name='approval_status',
-            field=models.SmallIntegerField(choices=[(1, 'Pending'), (2, 'Denied'), (3, 'Approved'), (4, 'Deleted')], default=1),
-        ),
-        migrations.AlterField(
-            model_name='feed',
-            name='feed_url',
-            field=models.URLField(help_text='JSON and other feed types coming soon', max_length=500, unique=True),
+            model_name="feed",
+            name="feed_url",
+            field=models.URLField(help_text="JSON and other feed types coming soon", max_length=500, unique=True),
         ),
         migrations.AddField(
-            model_name='feedlistthrough',
-            name='feed',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='group', to='aggregator.Feed'),
+            model_name="feedlistthrough",
+            name="feed",
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.SET_NULL, related_name="group", to="aggregator.Feed"
+            ),
         ),
         migrations.AddField(
-            model_name='feedlistthrough',
-            name='feedlist',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='group', to='aggregator.FeedList'),
+            model_name="feedlistthrough",
+            name="feedlist",
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.SET_NULL, related_name="group", to="aggregator.FeedList"
+            ),
         ),
     ]

@@ -6,4 +6,5 @@
     "--load-plugins",
     "pylint_django"
   ],
+  "python.formatting.provider": "black",
 }

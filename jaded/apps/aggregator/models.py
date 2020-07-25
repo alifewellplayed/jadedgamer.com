@@ -1,4 +1,3 @@
-
 import uuid
 
 from datetime import datetime, timedelta
@@ -13,36 +12,34 @@ from taggit.models import GenericUUIDTaggedItemBase, TaggedItemBase
 
 from django_push.subscriber import signals as push_signals
 from django_push.subscriber.models import Subscription
-from coreExtend.util.slug  import unique_slugify
+from coreExtend.util.slug import unique_slugify
 from coreExtend.models import UUIDTaggedItem
 
 from .managers import FeedManager, FeedItemManager, FeedListManager
 
 import logging
-logger = logging.getLogger('default')
+
+logger = logging.getLogger("default")
 
 STATUS_CHOICES = (
-    (1, 'Pending'),
-    (2, 'Denied'),
-    (3, 'Approved'),
-    (4, 'Deleted'),
+    (1, "Pending"),
+    (2, "Denied"),
+    (3, "Approved"),
+    (4, "Deleted"),
 )
 
 FEED_TYPE = (
-    (1, 'RSS'),
-    (2, 'JSON'),
-    (3, 'Twitter'),
+    (1, "RSS"),
+    (2, "JSON"),
+    (3, "Twitter"),
 )
 
 FEED_DISPLAY = (
-    (0, 'default'),
-    (1, 'Display Thumbnails'),
+    (0, "default"),
+    (1, "Display Thumbnails"),
 )
 
-FEEDLIST_CHOICES = (
-    (True, 'Only me'),
-    (False, 'Everyone')
-)
+FEEDLIST_CHOICES = ((True, "Only me"), (False, "Everyone"))
 
 
 class FeedList(models.Model):
@@ -52,8 +49,10 @@ class FeedList(models.Model):
     can_self_add = models.BooleanField(help_text="Who can edit this list?", choices=FEEDLIST_CHOICES, default=True)
     date_added = models.DateTimeField(verbose_name="When list was added to the site", auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='lists', blank=True, null=True, on_delete=models.SET_NULL )
-    feeds = models.ManyToManyField('Feed', through='FeedListThrough', blank=True)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="lists", blank=True, null=True, on_delete=models.SET_NULL
+    )
+    feeds = models.ManyToManyField("Feed", through="FeedListThrough", blank=True)
     description = models.TextField(max_length=500, blank=True, null=True)
     objects = FeedListManager()
 
@@ -62,9 +61,9 @@ class FeedList(models.Model):
 
     def get_absolute_url(self):
         return "/lists/%s/" % (self.id)
-    
+
     def feeds_ordered(self):
-        return [f.feed for f in FeedListThrough.objects.filter(feedlist=self).order_by('order')]
+        return [f.feed for f in FeedListThrough.objects.filter(feedlist=self).order_by("order")]
 
     def items(self):
         feeds = list(self.feeds.all())
@@ -78,18 +77,21 @@ class FeedList(models.Model):
     class Meta:
         ordering = ("date_added",)
 
+
 class Feed(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=500)
     slug = models.SlugField(max_length=500, blank=True)
     site_url = models.URLField(unique=True, max_length=500, blank=True)
-    feed_url = models.URLField(unique=True, max_length=500, help_text='JSON and other feed types coming soon')
+    feed_url = models.URLField(unique=True, max_length=500, help_text="JSON and other feed types coming soon")
     active = models.BooleanField(default=True, db_index=True)
     feed_type = models.SmallIntegerField(choices=FEED_TYPE, default=1)
     feed_display = models.SmallIntegerField(choices=FEED_DISPLAY, default=0)
-  #  feed_list = models.ForeignKey(FeedList, related_name='feed_lists', blank=True, null=True, on_delete=models.SET_NULL)
+    #  feed_list = models.ForeignKey(FeedList, related_name='feed_lists', blank=True, null=True, on_delete=models.SET_NULL)
     approval_status = models.SmallIntegerField(choices=STATUS_CHOICES, default=1)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='feeds', on_delete=models.SET_NULL)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, blank=True, null=True, related_name="feeds", on_delete=models.SET_NULL
+    )
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     next_scheduled_update = models.DateTimeField(null=True, blank=True)
@@ -139,6 +141,7 @@ class Feed(models.Model):
     class Meta:
         ordering = ("-title",)
 
+
 class FeedItem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     guid = models.CharField(max_length=500, unique=True, db_index=True)
@@ -154,7 +157,7 @@ class FeedItem(models.Model):
     tags = TaggableManager(through=UUIDTaggedItem, blank=True)
     objects = FeedItemManager()
 
-    #def clicks(self):
+    # def clicks(self):
     #    points = LinkClick.objects.filter(link=self)
     #    return points.count()
 
@@ -167,10 +170,11 @@ class FeedItem(models.Model):
     def get_absolute_url(self):
         return self.link
 
+
 class FeedListThrough(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    feed = models.ForeignKey(Feed, related_name='group', null=True, on_delete=models.SET_NULL)
-    feedlist = models.ForeignKey(FeedList, related_name='group', null=True, on_delete=models.SET_NULL)
+    feed = models.ForeignKey(Feed, related_name="group", null=True, on_delete=models.SET_NULL)
+    feedlist = models.ForeignKey(FeedList, related_name="group", null=True, on_delete=models.SET_NULL)
     order = models.SmallIntegerField(default=0)
 
     def __str__(self):
@@ -181,7 +185,7 @@ class FeedListThrough(models.Model):
 
 
 def feed_updated(sender, notification, **kwargs):
-    log.debug('Recieved notification on subscription ID %s (%s)', sender.id, sender.topic)
+    log.debug("Recieved notification on subscription ID %s (%s)", sender.id, sender.topic)
     try:
         feed = Feed.objects.get(feed_url=sender.topic)
     except Feed.DoesNotExist:
@@ -197,7 +201,7 @@ def feed_updated(sender, notification, **kwargs):
             log.error("Feed ID %s has an entry ('%s') without a link or guid. Skipping.", feed.id, title)
         link = getattr(entry, "link", guid)
 
-        content = ''
+        content = ""
         if hasattr(entry, "summary"):
             content = entry.summary
 
@@ -207,24 +211,19 @@ def feed_updated(sender, notification, **kwargs):
         # 'content' takes precedence on anything else. 'summary' and
         # 'description' are usually truncated so it's safe to overwrite them
         if hasattr(entry, "content"):
-            content = ''
+            content = ""
             for item in entry.content:
                 content += item.value
 
-        if 'published_parsed' in entry and entry.published_parsed is not None:
+        if "published_parsed" in entry and entry.published_parsed is not None:
             date_modified = datetime.datetime(*entry.published_parsed[:6])
-        elif 'updated_parsed' in entry and entry.updated_parsed is not None:
+        elif "updated_parsed" in entry and entry.updated_parsed is not None:
             date_modified = datetime.datetime(*entry.updated_parsed[:6])
         else:
             date_modified = datetime.datetime.now()
 
         FeedItem.objects.create_or_update_by_guid(
-            guid,
-            feed=feed,
-            title=title,
-            link=link,
-            summary=content,
-            date_updated=date_modified,
+            guid, feed=feed, title=title, link=link, summary=content, date_updated=date_modified,
         )
 
 

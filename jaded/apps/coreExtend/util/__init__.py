@@ -1,1 +1,6 @@
-__all__ = [ "humanize", "slug", "subscribe", "utils", ]
+__all__ = [
+    "humanize",
+    "slug",
+    "subscribe",
+    "utils",
+]

@@ -9,9 +9,11 @@ from django.utils.translation import ugettext_lazy as _
 
 log = logging.getLogger(__name__)
 
+
 class FeedListManager(models.Manager):
     def public(self):
         return super(FeedListManager, self).get_queryset().filter(can_self_add=False)
+
 
 class FeedManager(models.Manager):
     def subscribed(self):
@@ -38,30 +40,30 @@ class FeedItemManager(models.Manager):
             item = self.get(guid=guid)
         except self.model.DoesNotExist:
             # Create a new item
-            log.debug('Creating entry: %s', guid)
-            kwargs['guid'] = guid
+            log.debug("Creating entry: %s", guid)
+            kwargs["guid"] = guid
             item = self.create(**kwargs)
         else:
-            log.debug('Updating entry: %s', guid)
+            log.debug("Updating entry: %s", guid)
             # Update an existing one.
-            kwargs.pop('feed', None)
+            kwargs.pop("feed", None)
             # Don't update the date since most feeds get this wrong.
-            kwargs.pop('date_updated')
+            kwargs.pop("date_updated")
             for k, v in kwargs.items():
                 setattr(item, k, v)
             item.save()
 
         return item
-    
+
     def create_or_update_by_id(self, id, **kwargs):
         try:
             item = self.get(id=id)
         except self.model.DoesNotExist:
-            log.debug('Creating entry: %s', id)
-            kwargs['id'] = id
+            log.debug("Creating entry: %s", id)
+            kwargs["id"] = id
             item = self.create(**kwargs)
         else:
-            log.debug('Updating entry: %s', id)
+            log.debug("Updating entry: %s", id)
             for k, v in kwargs.items():
                 setattr(item, k, v)
             item.save()

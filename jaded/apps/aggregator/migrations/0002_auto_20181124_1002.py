@@ -7,13 +7,19 @@ import taggit.managers
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('aggregator', '0001_initial'),
+        ("aggregator", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='feed',
-            name='tags',
-            field=taggit.managers.TaggableManager(blank=True, help_text='A comma-separated list of tags.', through='coreExtend.UUIDTaggedItem', to='taggit.Tag', verbose_name='Tags'),
+            model_name="feed",
+            name="tags",
+            field=taggit.managers.TaggableManager(
+                blank=True,
+                help_text="A comma-separated list of tags.",
+                through="coreExtend.UUIDTaggedItem",
+                to="taggit.Tag",
+                verbose_name="Tags",
+            ),
         ),
     ]

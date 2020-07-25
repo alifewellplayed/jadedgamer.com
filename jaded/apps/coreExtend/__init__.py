@@ -20,6 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-__version__ = '2.0.0'
+__version__ = "2.0.0"
 
-default_app_config = 'coreExtend.apps.coreExtendConfig'
+default_app_config = "coreExtend.apps.coreExtendConfig"

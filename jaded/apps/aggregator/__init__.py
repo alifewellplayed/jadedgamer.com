@@ -1,3 +1,3 @@
-__version__ = '2.0.0'
+__version__ = "2.0.0"
 
-default_app_config = 'aggregator.apps.aggregatorConfig'
+default_app_config = "aggregator.apps.aggregatorConfig"
