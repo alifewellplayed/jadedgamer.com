@@ -43,7 +43,7 @@ class Command(BaseCommand):
             os.unlink(self.LOCKFILE)
         log.debug("Ending run.")
 
-    def update_feeds(self, verbose=False, num_threads=4):
+    def update_feeds(self, verbose=True, num_threads=4):
         feed_queue = queue.Queue()
         for feed in Feed.objects.approved():
             feed_queue.put(feed)
