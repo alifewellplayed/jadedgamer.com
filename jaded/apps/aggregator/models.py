@@ -177,6 +177,8 @@ class FeedItem(models.Model):
                 # summary_text = generate_summary(summary.get_text(), 4)
                 summary_text = bpe_summarize(summary_text.get_text(), percentile=99)
                 self.description = summary_text
+        if not self.original_title:
+            self.original_title = self.title
         super(FeedItem, self).save(**kwargs)
 
     def get_absolute_url(self):
