@@ -19,9 +19,13 @@ zappa>=0.51.0
 django-push
 feedparser==5.2.1
 beautifulsoup4
+python-dateutil<2.7.0
 #nltk
 #numpy
 #networkx
+-f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
+torch-nightly
+
 bpe-summarizer
 
 djangorestframework
