@@ -9,11 +9,13 @@ import threading
 import queue
 import logging
 import socket
+import datetime
+from bpe_summarizer import bpe_summarize
 
 from django.core.management.base import BaseCommand
 
 from aggregator.models import FeedList, Feed, FeedItem
-from aggregator.utils import generate_summary
+from aggregator.utils import generate_summary, read_article
 
 
 class Command(BaseCommand):
@@ -49,9 +51,9 @@ class Command(BaseCommand):
             os.unlink(self.LOCKFILE)
         log.debug("Ending run.")
 
-    def description_to_summary(self, verbose=False, num_threads=4):
+    def description_to_summary(self, verbose=True, num_threads=4):
         feeditem_queue = queue.Queue()
-        for feeditem in FeedItem.objects.all()[:5]:
+        for feeditem in FeedItem.objects.all():
             feeditem_queue.put(feeditem)
         threadpool = []
         for i in range(num_threads):
@@ -97,10 +99,20 @@ class SummaryWorker(threading.Thread):
         try:
             socket.setdefaulttimeout(15)
             description = feeditem.summary
-            summary = BeautifulSoup(feeditem.summary, "html.parser")
-            print("generating summary...")
-            summary_text = generate_summary(summary.get_text(), 2)
-            print(summary_text)
+            guid = feeditem.guid
+            date_modified = datetime.datetime.now()
+            if description:
+                summary = BeautifulSoup(description, "html.parser")
+                print("generating summary...")
+                if len(summary.get_text()) >= 500:
+                    # summary_text = generate_summary(summary.get_text(), 4)
+                    summary_text = bpe_summarize(summary.get_text(), percentile=99)
+                else:
+                    summary_text = summary.get_text()
+                # print(summary_text)
+                FeedItem.objects.create_or_update_by_guid(guid, description=summary_text, date_updated=date_modified)
+            else:
+                print("skipping, no description found.")
         except Exception:
             self.log.exception("Error updating %s." % feeditem)
             return

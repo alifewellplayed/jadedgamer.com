@@ -3,6 +3,9 @@ from nltk.corpus import stopwords
 from nltk.cluster.util import cosine_distance
 import numpy as np
 import networkx as nx
+from bs4 import BeautifulSoup
+import re
+import json
 
 
 def push_credentials(hub_url):
@@ -13,11 +16,18 @@ def push_credentials(hub_url):
     return tuple(settings.SUPERFEEDR_CREDS)
 
 
-def read_article(data):
-    article = data.split(". ")
+def read_article(text, top_n=5):
     sentences = []
+    newString = text.lower()
+    newString = BeautifulSoup(newString, "html.parser").text
+    newString = re.sub(r"\([^)]*\)", "", newString)
+    newString = re.sub('"', "", newString)
+    newString = re.sub(r"'s\b", "", newString)
+    # newString = re.sub("[^a-zA-Z]", " ", newString)
+    newString = re.sub("[m]{2,}", "mm", newString)
+
+    article = newString.split(". ")
     for sentence in article:
-        print(sentence)
         sentences.append(sentence.replace("[^a-zA-Z]", " ").split(" "))
     sentences.pop()
     return sentences
@@ -55,11 +65,11 @@ def build_similarity_matrix(sentences, stop_words):
     return similarity_matrix
 
 
-def generate_summary(file_name, top_n=5):
+def generate_summary(file_name, top_n=2):
     stop_words = stopwords.words("english")
     summarize_text = []
     # Step 1 - Read text anc split it
-    sentences = read_article(file_name)
+    sentences = read_article(file_name, top_n)
     # Step 2 - Generate Similary Martix across sentences
     sentence_similarity_martix = build_similarity_matrix(sentences, stop_words)
     # Step 3 - Rank sentences in similarity martix
@@ -67,9 +77,12 @@ def generate_summary(file_name, top_n=5):
     scores = nx.pagerank(sentence_similarity_graph)
     # Step 4 - Sort the rank and pick top sentences
     ranked_sentence = sorted(((scores[i], s) for i, s in enumerate(sentences)), reverse=True)
-    print("Indexes of top ranked_sentence order are ", ranked_sentence)
+    # print("Indexes of top ranked_sentence order are ", ranked_sentence)
     for i in range(top_n):
         summarize_text.append(" ".join(ranked_sentence[i][1]))
+    # Step 5 - Offcourse, output the summarize text
+    # print("Summarize Text: \n", ". ".join(summarize_text))
+    # return summarize_text
 
-    # Step 5 - Offcourse, output the summarize texr
-    print("Summarize Text: \n", ". ".join(summarize_text))
+    result = ". ".join(summarize_text)
+    return result

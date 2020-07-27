@@ -6,6 +6,7 @@ from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
+from bpe_summarizer import bpe_summarize
 
 from taggit.managers import TaggableManager
 from taggit.models import GenericUUIDTaggedItemBase, TaggedItemBase
@@ -152,6 +153,7 @@ class FeedItem(models.Model):
     link = models.URLField(max_length=500)
     description = models.TextField(blank=True)
     summary = models.TextField(blank=True)
+    # generated_summary = models.TextField(blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     tags = TaggableManager(through=UUIDTaggedItem, blank=True)
@@ -166,6 +168,15 @@ class FeedItem(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, **kwargs):
+        if not self.description and self.summary:
+            summary_text = BeautifulSoup(self.summary, "html.parser")
+            if len(summary_text.get_text()) >= 500:
+                # summary_text = generate_summary(summary.get_text(), 4)
+                summary_text = bpe_summarize(summary.get_text(), percentile=99)
+                self.description = summary_text
+        super(FeedItem, self).save(**kwargs)
 
     def get_absolute_url(self):
         return self.link

@@ -133,10 +133,10 @@ class FeedUpdateWorker(threading.Thread):
                     guid,
                     feed=feed,
                     title=title,
+                    original_title=title,
                     link=link,
                     summary=content,
                     date_updated=date_modified,
                     thumbnail_url=thumbnail_url,
                 )
-
         self.log.debug("Done with %s." % feed)
