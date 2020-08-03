@@ -5,6 +5,12 @@ Changelog file will try and be updated regularly with major updates. Posts to us
 
 ---
 
+## 3.0.5 (07/26/2020)
+
+* Added summarizer text tool
+* Changed zappa to use slim handler because of pytorch libraries size
+* Started work on auto tagging functionality
+
 ## 3.0.1 (02/05/2020)
 
 * Switched to fully RESTFUL API

@@ -8,12 +8,6 @@
   Django
   Gunicorn
   Python 3.7
-  HTML,
-  CSS
-  SCSS
-  jQuery
-  Pace.js
-  Bootstrap 4
   postgreSQL
   Amazon S3
   AWS Lambda
