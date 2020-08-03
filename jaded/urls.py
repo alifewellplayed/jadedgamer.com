@@ -20,7 +20,7 @@ urlpatterns = [
     path("500/", TemplateView.as_view(template_name="500.html"), name="page_500"),
     path("r/", include("redirect.urls")),
     path("subscriber/", include("django_push.subscriber.urls")),
-    path("/", TemplateView.as_view(template_name="index.html"), name="index"),
+    path("", TemplateView.as_view(template_name="index.html"), name="index"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
