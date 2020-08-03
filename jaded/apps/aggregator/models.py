@@ -1,13 +1,10 @@
 import uuid
-
 from datetime import datetime, timedelta
 from django.db import models
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
-from bpe_summarizer import bpe_summarize
-from bs4 import BeautifulSoup
 
 from taggit.managers import TaggableManager
 from taggit.models import GenericUUIDTaggedItemBase, TaggedItemBase
@@ -171,12 +168,6 @@ class FeedItem(models.Model):
         return self.title
 
     def save(self, **kwargs):
-        if not self.description and self.summary:
-            summary_text = BeautifulSoup(self.summary, "html.parser")
-            if len(summary_text.get_text()) >= 500:
-                # summary_text = generate_summary(summary.get_text(), 4)
-                summary_text = bpe_summarize(summary_text.get_text(), percentile=99)
-                self.description = summary_text
         if not self.original_title:
             self.original_title = self.title
         super(FeedItem, self).save(**kwargs)

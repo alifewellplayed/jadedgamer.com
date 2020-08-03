@@ -5,6 +5,10 @@ Changelog file will try and be updated regularly with major updates. Posts to us
 
 ---
 
+## 3.0.6 (08/02/2020)
+
+* Branch backend to allow for slim handler API. Running NLTK and ML libraries too large for serverless. Going forward this branch will only be for consuming endpoints. Heavy lifting will be done in another app.
+
 ## 3.0.5 (07/26/2020)
 
 * Added summarizer text tool
