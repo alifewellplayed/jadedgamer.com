@@ -1,5 +1,5 @@
 {
-  "python.pythonPath": "venv/bin/python",
+  "python.pythonPath": "/Users/tyler/Sites/api.jadedgamer.com/venv/bin/python3",
   "python.linting.pylintEnabled": true,
   "python.linting.enabled": true,
   "python.linting.pylintArgs": [

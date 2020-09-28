@@ -37,9 +37,18 @@ class AllFeedsListView(APIView):
         return Response({"feeds": serializer.data,})
 
 
+#latest news items
 @permission_classes((AllowAny,))
 class FeedItemAPIView(generics.ListCreateAPIView):
-    search_fields = ["title", "summary", "description"]
+    search_fields = ["title", "description"]
+    filter_backends = (filters.SearchFilter,)
+    queryset = FeedItem.objects.all()
+    serializer_class = FeedItemSerializer
+
+#latest news items
+@permission_classes((AllowAny,))
+class FeedItemPopularAPIView(generics.ListCreateAPIView):
+    search_fields = ["title", "description"]
     filter_backends = (filters.SearchFilter,)
     queryset = FeedItem.objects.all()
     serializer_class = FeedItemSerializer

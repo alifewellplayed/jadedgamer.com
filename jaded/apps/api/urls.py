@@ -11,9 +11,9 @@ lists_endpoint = [
 ]
 
 news_endpoint = [
-    path("", feedViews.FeedItemAPIView.as_view()),
-    path("latest/", newsViews.LatestView.as_view(), name="LatestNews"),
-    path("popular/", newsViews.PopularView.as_view(), name="PopularNews"),
+    path("latest/", feedViews.FeedItemAPIView.as_view(), name="LatestNews"),
+    path("popular/", feedViews.FeedItemPopularAPIView.as_view(), name="PopularNews"),
+    path("search/", feedViews.FeedItemAPIView.as_view(), name="Search"),
 ]
 
 tags_endpoint = [
